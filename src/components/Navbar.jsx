@@ -1,4 +1,4 @@
-// app/components/Navbar.jsx
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -21,7 +21,6 @@ export default function Navbar() {
     const navLinks = [
         { label: "Home", href: "/" },
         { label: "Browse Recipes", href: "/recipes" },
-        // { label: "Favorites", href: "/favorites" },
     ];
 
     const dashboardLink = {
@@ -38,15 +37,12 @@ export default function Navbar() {
 
     return (
         <nav className="sticky top-0 z-50 border-b border-default-100 bg-background/80 backdrop-blur-xl">
-            {/* Changed to grid layout on desktop (md:grid-cols-3) to create three equal columns.
-        This guarantees the middle menu stays mathematically dead-center.
-      */}
             <div className="mx-auto flex md:grid md:grid-cols-3 h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
                 {/* LOGO AREA (Left Column) */}
                 <div className="flex items-center justify-start">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500 shadow-lg group-hover:scale-105 transition-transform duration-200">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-violet-600 to-fuchsia-500 shadow-lg group-hover:scale-105 transition-transform duration-200">
                             <span className="text-xl font-bold text-white">R</span>
                         </div>
                         <div className="hidden leading-none sm:block">
@@ -77,19 +73,27 @@ export default function Navbar() {
                 <div className="flex items-center justify-end gap-4">
                     {/* Desktop Controls */}
                     <div className="hidden items-center gap-4 md:flex">
-                        {/* Theme Dropdown */}
                         <ThemeSwitcher />
 
-                        {/* Vertical Divider */}
                         <div className="h-6 w-px bg-default-200" />
 
                         {/* Authentication Links */}
                         <div className="flex items-center gap-3">
                             {user ? (
                                 <>
-                                    <span className="text-sm font-medium text-muted-foreground">
-                                        Hi, <span className="text-foreground font-semibold">{user.name}</span>!
-                                    </span>
+                                    {/* DYNAMIC PROFILE IMAGE / INITIAL BADGE */}
+                                    <Link href="/dashboard/my-profile" aria-label="Profile" className="hover:opacity-85 transition-opacity">
+                                        <div className="relative flex h-9 w-9 shrink-0 overflow-hidden rounded-full ring-2 ring-violet-500/30 dark:ring-violet-400/30">
+                                            {user.image ? (
+                                                <img className="aspect-square h-full w-full object-cover" src={user.image} alt={user.name || "User"} />
+                                            ) : (
+                                                <div className="flex h-full w-full items-center justify-center rounded-full bg-default-200 text-sm font-semibold text-default-700">
+                                                    {user.name ? user.name.slice(0, 1).toUpperCase() : "U"}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Link>
+
                                     <Button
                                         onClick={handleSignOut}
                                         variant="flat"
@@ -104,16 +108,13 @@ export default function Navbar() {
                                 <>
                                     <Link
                                         href="/auth/signin"
-                                        variant="light"
-                                        size="sm"
-                                        className="btn font-medium text-default-600 hover:text-foreground"
+                                        className="text-sm font-medium text-default-600 hover:text-foreground transition-colors"
                                     >
                                         Sign In
                                     </Link>
                                     <Link
                                         href="/auth/signup"
-                                        size="sm"
-                                        className="p-2.5 bg-accent text-accent-foreground font-medium shadow-sm rounded-full"
+                                        className="text-sm font-medium p-2.5 bg-violet-600 dark:bg-violet-500 text-white shadow-sm rounded-full px-5 hover:opacity-90 transition-opacity"
                                     >
                                         Get Started
                                     </Link>
@@ -165,8 +166,28 @@ export default function Navbar() {
 
                         <div className="border-t border-default-100 pt-4 space-y-3 flex flex-col">
                             {user ? (
-                                <div className="flex flex-col gap-3 px-4">
-                                    <span className="text-sm text-muted-foreground">Signed in as {user.name}</span>
+                                <div className="flex flex-col gap-4 px-4">
+                                    {/* Mobile Profile Display */}
+                                    <Link 
+                                        href="/dashboard/my-profile" 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center gap-3 group"
+                                    >
+                                        <div className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full ring-2 ring-violet-500/20">
+                                            {user?.image ? (
+                                                <img className="aspect-square h-full w-full object-cover" src={user?.image} alt={user?.name || "User"} />
+                                            ) : (
+                                                <div className="flex h-full w-full items-center justify-center rounded-full bg-default-200 text-sm font-semibold text-default-700">
+                                                    {user?.name ? user?.name.slice(0, 1).toUpperCase() : "U"}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-semibold text-foreground group-hover:text-violet-500 transition-colors">{user?.name}</span>
+                                            <span className="text-xs text-muted-foreground">View profile</span>
+                                        </div>
+                                    </Link>
+
                                     <Button
                                         onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
                                         color="danger"
@@ -180,16 +201,14 @@ export default function Navbar() {
                                 <div className="flex flex-col gap-2 px-2">
                                     <Link
                                         href="/auth/signin"
-                                        variant="light"
-                                        className="w-full justify-start text-base font-medium text-default-600"
+                                        className="w-full text-center rounded-xl p-2.5 text-base font-medium text-default-600 hover:bg-default-100 transition-colors"
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         Sign In
                                     </Link>
                                     <Link
                                         href="/auth/signup"
-                                        color="primary"
-                                        className="w-full font-semibold shadow-md rounded-xl text-center p-2.5 bg-accent text-accent-foreground"
+                                        className="w-full font-semibold shadow-md rounded-xl text-center p-2.5 bg-violet-600 text-white hover:opacity-90 transition-opacity"
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         Get Started
