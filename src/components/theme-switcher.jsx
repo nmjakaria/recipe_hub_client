@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/set-state-in-effect */
+// app/components/theme-switcher.jsx
 "use client";
 
-import { Dropdown, Button, Label } from "@heroui/react";
+import { Dropdown, Label } from "@heroui/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Display, Moon, Sun } from "@gravity-ui/icons";
@@ -26,15 +27,9 @@ export function ThemeSwitcher() {
 
   return (
     <Dropdown>
-      <Dropdown.Trigger>
-        <Button 
-          as="div" 
-          variant="secondary" 
-          className="cursor-pointer select-none flex items-center gap-2"
-        >
-          {renderActiveIcon()}
-          <span>Theme</span>
-        </Button>
+      <Dropdown.Trigger className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl border border-default-200 bg-default-50/50 text-foreground hover:bg-default-100 transition-colors duration-200 cursor-pointer select-none">
+        {renderActiveIcon()}
+        <span>Theme</span>
       </Dropdown.Trigger>
       
       <Dropdown.Popover>
@@ -44,7 +39,6 @@ export function ThemeSwitcher() {
           selectedKeys={theme ? [theme] : []}
           onAction={(key) => setTheme(key)}
         >
-          {/* In HeroUI v3, icons are just passed as immediate children before the <Label> */}
           <Dropdown.Item id="light" textValue="Light Theme" className="flex items-center gap-2">
             <Sun className="w-4 h-4" />
             <Label>Light</Label>
