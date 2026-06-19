@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, Button, Link, TextField, Label, InputGroup, Input } from "@heroui/react";
+import { Card, Button, Link, TextField, Label, InputGroup, Input, toast } from "@heroui/react";
 import { Eye, EyeSlash, At, ShieldKeyhole } from "@gravity-ui/icons";
 import { signIn } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -41,6 +41,10 @@ export default function SigninPage() {
                 setError(authError.message || "Invalid email or password.");
             } else {
                 setSuccess("Signed in successfully! Redirecting...");
+                toast.success("Signed in successfully", {
+                            description: "You have been logged into your account.",
+                            timeout: 2000,
+                        });
                 setEmail("");
                 setPassword("");
                 router.push(redirectTo); // Redirect to the specified page after successful sign-in

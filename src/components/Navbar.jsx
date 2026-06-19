@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@heroui/react";
+import { Button, toast } from "@heroui/react";
 import { ThemeSwitcher } from "./theme-switcher";
 import { useSession } from "@/lib/auth-client";
 import { signOut } from "@/lib/auth-client";
@@ -16,6 +16,10 @@ export default function Navbar() {
 
     const handleSignOut = async () => {
         await signOut();
+        toast.success("Signed out successfully", {
+            description: "You have been logged out of your account.",
+            timeout: 2000,
+        });
     };
 
     const navLinks = [
@@ -168,8 +172,8 @@ export default function Navbar() {
                             {user ? (
                                 <div className="flex flex-col gap-4 px-4">
                                     {/* Mobile Profile Display */}
-                                    <Link 
-                                        href="/dashboard/my-profile" 
+                                    <Link
+                                        href="/dashboard/my-profile"
                                         onClick={() => setIsMenuOpen(false)}
                                         className="flex items-center gap-3 group"
                                     >
