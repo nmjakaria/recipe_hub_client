@@ -1,4 +1,6 @@
-// import { getUserToken } from "./session";
+// lib/core/server.js
+
+import { getUserToken } from "./session";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -9,20 +11,20 @@ export const serverFetch = async (path) => {
     return res.json();
 }
 
-// export const authHeader = async () => {
-//     const token = await getUserToken();
-//     const header = token ? {
-//         authorization: `Bearer ${token}`,
-//     } : {};
-//     return header;
-// }
+export const authHeader = async () => {
+    const token = await getUserToken();
+    const header = token ? {
+        authorization: `Bearer ${token}`,
+    } : {};
+    return header;
+}
 
 export const serverMutation = async (path, data, method = 'POST') => {
     const res = await fetch(`${baseUrl}${path}`, {
         method: method,
         headers: {
             'Content-Type': 'application/json',
-            // ... await authHeader(),
+            ... await authHeader(),
         },
         body: JSON.stringify(data),
     });

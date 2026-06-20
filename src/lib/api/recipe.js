@@ -4,3 +4,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 export const getRecipe = async () =>{
     return serverFetch('/api/recipes');
 }
+
+export const getRecipeById = async (recipeId) => {
+    return serverFetch(`/api/recipes/${recipeId}`);
+}

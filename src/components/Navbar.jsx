@@ -7,6 +7,7 @@ import { Button, toast } from "@heroui/react";
 import { ThemeSwitcher } from "./theme-switcher";
 import { useSession } from "@/lib/auth-client";
 import { signOut } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,6 +21,7 @@ export default function Navbar() {
             description: "You have been logged out of your account.",
             timeout: 2000,
         });
+        redirect('/');
     };
 
     const navLinks = [
