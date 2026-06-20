@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { Clock, ChefHat, Heart, Bookmark, AlertTriangle, CreditCard, CheckCircle2, ArrowLeft } from 'lucide-react';
-import { Button } from '@heroui/react'; 
+import { Button, toast } from '@heroui/react';
 import Link from 'next/link';
-import { createLikeUnlike } from '@/lib/actions/recipe';
+import { createFavorite, createLikeUnlike, createRecipeReport } from '@/lib/actions/recipe';
 
 export default function RecipeDetailsView({ recipe }) {
     const {
@@ -19,14 +19,16 @@ export default function RecipeDetailsView({ recipe }) {
         description,
         authorName,
         likesCount: initialLikesCount,
+        isLikedByUser,       // Loaded dynamically from your updated backend GET route
+        isFavoritedByUser,   // Loaded dynamically from your updated backend GET route
     } = recipe;
 
     const recipeId = recipe._id || recipe.id;
 
-    // --- Interactive Component States ---
+    // --- Dynamic Component States ---
     const [likesCount, setLikesCount] = useState(initialLikesCount || 0);
-    const [isLiked, setIsLiked] = useState(false);
-    const [isFavorited, setIsFavorited] = useState(false);
+    const [isLiked, setIsLiked] = useState(isLikedByUser || false);         // Updated state initialization
+    const [isFavorited, setIsFavorited] = useState(isFavoritedByUser || false); // Updated state initialization
     const [isReportModalOpen, setIsReportModalOpen] = useState(false);
     const [reportReason, setReportReason] = useState('');
     const [isSubmittingReport, setIsSubmittingReport] = useState(false);
@@ -41,7 +43,7 @@ export default function RecipeDetailsView({ recipe }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ recipeId, recipeName, price: 499 })
             });
-            
+
             const data = await response.json();
             if (data.url) {
                 window.location.href = data.url;
@@ -62,34 +64,54 @@ export default function RecipeDetailsView({ recipe }) {
         setLikesCount(prev => checkState ? prev + 1 : prev - 1);
 
         try {
-            // FIXED: Passing recipeId into your custom mutation utility
             await createLikeUnlike(recipeId);
         } catch (err) {
             console.error("Failed syncing like counter status", err);
-            // Rollback UI states if network request completely drops
+            // Rollback UI states if network request fails
             setIsLiked(!checkState);
             setLikesCount(prev => !checkState ? prev + 1 : prev - 1);
         }
     };
 
-    // --- Action 3: Favorite Handler ---
+    // --- Action 3: Favorite Handler (Connected to Express Endpoint) ---
     const handleFavoriteToggle = async () => {
-        setIsFavorited(!isFavorited);
+        const fallbackState = isFavorited;
+        setIsFavorited(!fallbackState); // Optimistic UI Update
+
+        try {
+            await createFavorite(recipeId, recipeName)
+            toast.success(`You are Liked ${recipeName}`, {
+                description: "Best of Luck for you.",
+                timeout: 2000,
+            });
+
+        } catch (err) {
+            console.error("Failed updating bookmark arrays:", err);
+            setIsFavorited(fallbackState); // Rollback on network failure
+        }
     };
 
-    // --- Action 4: Report Submission Handler ---
+    // --- Action 4: Report Submission Handler (Connected to Express Endpoint) ---
     const handleReportSubmit = async (e) => {
         e.preventDefault();
         if (!reportReason.trim()) return;
 
         setIsSubmittingReport(true);
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setIsReportModalOpen(false);
-            setReportReason('');
-            alert("Recipe report submitted successfully for evaluation.");
+            const result = await createRecipeReport(recipeId, reportReason);
+            if (result?.success) {
+                setIsReportModalOpen(false);
+                setReportReason('');
+                toast.success("Recipe report submitted successfully for evaluation.", {
+                    description: "Keep Going on!.",
+                    timeout: 2000,
+                });
+            } else {
+                toast.warning(result?.message || "Failed to log violation incident.");
+            }
         } catch (err) {
-            console.error(err);
+            console.error("Compliance log network failure:", err);
+            toast.warning("Network error processing report request.");
         } finally {
             setIsSubmittingReport(false);
         }
@@ -97,7 +119,7 @@ export default function RecipeDetailsView({ recipe }) {
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8 min-h-screen text-foreground">
-            
+
             {/* Navigation Header */}
             <Link href="/recipes" className="inline-flex items-center gap-2 text-xs font-semibold text-zinc-500 hover:text-primary transition-colors mb-6">
                 <ArrowLeft className="size-4" /> Back to explore
@@ -105,7 +127,7 @@ export default function RecipeDetailsView({ recipe }) {
 
             {/* Split Screen Container Architecture */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
+
                 {/* Left Columns Matrix: Primary Recipe Meta & Data */}
                 <div className="lg:col-span-2 space-y-6">
                     <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-zinc-100 border border-default">
@@ -156,7 +178,7 @@ export default function RecipeDetailsView({ recipe }) {
                 {/* Right Column Matrix: Interactive Action Control Widget Bar */}
                 <div className="space-y-5 lg:sticky lg:top-6 h-fit">
                     <div className="border border-default bg-white dark:bg-zinc-900 p-5 rounded-2xl shadow-sm space-y-4">
-                        
+
                         {/* Static Spec Configuration Rows */}
                         <div className="grid grid-cols-2 gap-4 text-center border-b border-default pb-4">
                             <div className="flex flex-col items-center justify-center p-3 bg-zinc-50 dark:bg-zinc-900/50 border border-default rounded-xl">
@@ -179,7 +201,7 @@ export default function RecipeDetailsView({ recipe }) {
 
                         {/* Complete 4 Actions Integration Buttons Stack */}
                         <div className="flex flex-col gap-2.5 pt-2">
-                            
+
                             {/* Action Button 1: Purchase via Stripe Hook */}
                             <Button color="primary" className="w-full font-bold h-12 shadow-md" startContent={<CreditCard className="size-4" />} onClick={handlePurchase} isLoading={isPurchasing}>
                                 Purchase Recipe Access

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Navbar from "@/components/Navbar";
+import { Toast } from "@heroui/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,11 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <Providers>
+          <Toast.Provider placement="top end"
+            width={380}
+            gap={12}
+            maxVisibleToasts={4}
+            className="top-6 right-6" />
           <Navbar />
           {children}
         </Providers>
