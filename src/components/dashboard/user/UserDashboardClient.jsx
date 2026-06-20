@@ -35,11 +35,11 @@ export default function UserDashboardClient({ user }) {
                         <h1 className="text-3xl font-bold tracking-tight text-zinc-950 dark:text-zinc-50">Overview</h1>
                         {isPremium ? (
                             <Chip 
-                                startContent={<Crown className="size-3.5" />} 
                                 color="warning" 
                                 variant="flat" 
                                 className="font-semibold text-xs"
                             >
+                                <span><Crown className="size-3.5" /></span>
                                 Premium Pro
                             </Chip>
                         ) : (

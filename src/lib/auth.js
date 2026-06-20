@@ -7,7 +7,7 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 
 // Singleton MongoDB (important)
 const client = new MongoClient(process.env.MONGO_DB_URI);
-await client.connect();
+// await client.connect();
 
 const db = client.db(process.env.AUTH_DB_NAME);
 

@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { Plus, Trash2, Upload, Loader2, ChefHat, Clock, AlertCircle } from 'lucide-react';
-import { Select, Label, ListBox, TextField, Input, Description, FieldError, Button, toast } from '@heroui/react';
+import { Select, Label, ListBox, TextField, Input, Description, FieldError, Button, toast, TextArea } from '@heroui/react';
 import { createRecipe } from '@/lib/actions/recipe';
 
 export default function AddRecipeForm({ user }) {
@@ -18,6 +18,7 @@ export default function AddRecipeForm({ user }) {
         preparationTime: '',
         ingredients: [''],
         instructions: [''],
+        description: '',
 
         // Secured server injection mappings
         authorId: user?.id || 'anonymous_id',
@@ -127,6 +128,7 @@ export default function AddRecipeForm({ user }) {
                 preparationTime: '',
                 ingredients: [''],
                 instructions: [''],
+                description: '',
                 authorId: user?.id || 'anonymous_id',
                 authorName: user?.name || 'Anonymous User',
                 authorEmail: user?.email || 'no-email@domain.com',
@@ -146,7 +148,7 @@ export default function AddRecipeForm({ user }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 bg-background-secondary p-4 rounded-2xl">
             {/* Image Upload Banner Box */}
             <div className="border-2 border-dashed border-default rounded-2xl p-6 bg-white dark:bg-zinc-900 flex flex-col items-center justify-center min-h-60 relative overflow-hidden">
                 {formData.recipeImage ? (
@@ -358,7 +360,19 @@ export default function AddRecipeForm({ user }) {
                     </div>
                 </div>
             </div>
-
+            {/* Description Input */}
+            <TextField isInvalid={!!errors.description} className="flex flex-col gap-1.5 w-full">
+                <Label className="text-xs font-medium text-zinc-600 dark:text-zinc-400 px-1">Description</Label>
+                <TextArea
+                    value={formData.description}
+                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                    placeholder="Briefly describe what makes this recipe special..."
+                    rows={3}
+                    className="w-full min-h-24 border border-default rounded-xl p-3 flex items-center bg-zinc-50 dark:bg-zinc-900/50 transition-colors focus:border-primary outline-none text-sm text-foreground resize-none"
+                />
+                <Description className="text-xs text-zinc-400 dark:text-zinc-500 px-1">Give your dish an attractive summary description.</Description>
+                {errors.description && <FieldError className="text-xs text-danger px-1">{errors.description}</FieldError>}
+            </TextField>
             {/* Submission Trigger */}
             <div className="flex justify-end pt-4 border-t border-default">
                 <Button type="submit" color="primary" className="font-semibold" isLoading={isSubmitting} startContent={!isSubmitting && <ChefHat className="size-4" />}>
