@@ -42,6 +42,10 @@ export const auth = betterAuth({
             plan: {
                 type: "string",
                 default: "user_free"
+            },
+            isBlocked: {
+                type: "boolean",
+                default: false
             }
         }
     }

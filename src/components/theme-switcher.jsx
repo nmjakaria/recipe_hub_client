@@ -29,7 +29,7 @@ export function ThemeSwitcher() {
     <Dropdown>
       <Dropdown.Trigger className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl border border-default-200 bg-default-50/50 text-foreground hover:bg-default-100 transition-colors duration-200 cursor-pointer select-none">
         {renderActiveIcon()}
-        <span>Theme</span>
+        {/* <span></span> */}
       </Dropdown.Trigger>
       
       <Dropdown.Popover>

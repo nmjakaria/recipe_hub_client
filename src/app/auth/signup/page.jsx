@@ -16,6 +16,7 @@ export default function SignupPage() {
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("user");
     const [image, setImage] = useState("");
+    const [isBlocked, setIsBlocked] = useState("no");
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -53,6 +54,7 @@ export default function SignupPage() {
                 image: image.trim(), // Explicitly passing to standard Better Auth payload mapper
                 role,
                 plan,
+                isBlocked: isBlocked === "yes" ? true : false,
             });
 
             if (authError) {
