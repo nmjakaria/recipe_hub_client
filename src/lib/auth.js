@@ -1,24 +1,48 @@
-// lib/auth.js
 import dns from "node:dns";
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 import { betterAuth } from "better-auth";
-import { MongoClient } from "mongodb";
+import { MongoClient, ServerApiVersion } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { jwt } from "better-auth/plugins";
 
-// Singleton MongoDB (important)
-const client = new MongoClient(process.env.MONGO_DB_URI);
-// await client.connect();
+const uri = process.env.MONGO_DB_URI;
+const options = {
+    maxPoolSize: 10,
+    minPoolSize: 1,
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+};
 
-const db = client.db(process.env.AUTH_DB_NAME);
+let client;
+let clientPromise;
+
+if (!uri) {
+    throw new Error("Please add your MONGO_DB_URI to .env file");
+}
+
+if (process.env.NODE_ENV === "development") {
+    if (!global._mongoClientPromise) {
+        client = new MongoClient(uri, options);
+        global._mongoClientPromise = client.connect();
+    }
+    clientPromise = global._mongoClientPromise;
+} else {
+    client = new MongoClient(uri, options);
+    clientPromise = client.connect();
+}
+
+const connectedClient = await clientPromise;
+const db = connectedClient.db(process.env.AUTH_DB_NAME);
 
 export const auth = betterAuth({
-    database: mongodbAdapter(db, { client }),
+    database: mongodbAdapter(db, { client: connectedClient }),
 
     secret: process.env.BETTER_AUTH_SECRET,
 
-    // ✅ THIS MUST BE TOP LEVEL (NO async wrapper)
     emailAndPassword: {
         enabled: true,
     },

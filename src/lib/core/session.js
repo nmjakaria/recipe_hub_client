@@ -15,7 +15,7 @@ export const getUserSession = async () => {
 export const getUserToken = async () => {
     const {token} = await auth.api.getToken({
         headers: await headers()
-    })
+    });
     return token || null;
 }
 

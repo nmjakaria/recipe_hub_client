@@ -17,3 +17,11 @@ export const createFavorite = async (recipeId, recipeName)  => {
 export const createRecipeReport = async (recipeId, reportReason) => {
     return serverMutation(`/api/recipes/${recipeId}/report`, { reason: reportReason })
 }
+
+export const updateRecipe = async (id, updatedData) => {
+    return serverMutation(`/api/recipes/${id}`, updatedData, 'PATCH');
+};
+
+export const deleteRecipe = async (id) => {
+    return serverMutation(`/api/recipes/${id}`, {}, 'DELETE');
+};
