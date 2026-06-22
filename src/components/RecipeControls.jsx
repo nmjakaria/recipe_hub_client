@@ -67,8 +67,7 @@ export default function RecipeControls({ pagination }) {
                     {/* Clear Button active if filtering is set */}
                     {(currentCategory || currentCuisine) && (
                         <Button 
-                            size="sm" 
-                            variant="light" 
+                            size="sm"  
                             color="danger" 
                             onPress={() => router.push('/recipes')}
                             className="text-xs font-semibold rounded-lg"
@@ -85,10 +84,9 @@ export default function RecipeControls({ pagination }) {
 
             {/* Pagination Controls Footer Block */}
             {pagination.totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-2">
+                <div className="flex items-center justify-center gap-2">
                     <Button
                         size="sm"
-                        variant="bordered"
                         isDisabled={currentPage <= 1}
                         onPress={() => handlePageChange(currentPage - 1)}
                         className="rounded-xl font-medium text-xs dark:border-zinc-800 text-zinc-800 dark:text-zinc-200"
@@ -102,7 +100,6 @@ export default function RecipeControls({ pagination }) {
 
                     <Button
                         size="sm"
-                        variant="bordered"
                         isDisabled={currentPage >= pagination.totalPages}
                         onPress={() => handlePageChange(currentPage + 1)}
                         className="rounded-xl font-medium text-xs dark:border-zinc-800 text-zinc-800 dark:text-zinc-200"

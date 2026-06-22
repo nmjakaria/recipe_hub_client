@@ -2,6 +2,7 @@
 import RecipeCard from '@/components/RecipeCard';
 import RecipeControls from '@/components/RecipeControls';
 import { getRecipes } from '@/lib/api/recipe';
+import { FilterX } from 'lucide-react';
 import React from 'react';
 
 export default async function BrowseRecipePage({ searchParams }) {
@@ -36,8 +37,23 @@ export default async function BrowseRecipePage({ searchParams }) {
 
             {/* Conditional Empty Fallback vs Content Grid Matrix */}
             {recipes.length === 0 ? (
-                <div className="text-center py-20 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-900/40">
-                    <p className="text-zinc-400 text-sm">No recipes found matching your filter selection rules.</p>
+                <div
+                    className="group text-center py-16 px-6 border border-dashed border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl bg-white dark:bg-zinc-900/40 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/80 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center space-y-4 select-none outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-700"
+                >
+                    {/* Animated Icon Container */}
+                    <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 group-hover:scale-105 transition-all duration-300">
+                        <FilterX className="size-6 stroke-[1.5]" />
+                    </div>
+
+                    {/* Text Context Content */}
+                    <div className="space-y-1 max-w-sm mx-auto">
+                        <p className="text-zinc-900 dark:text-zinc-100 font-medium text-sm transition-colors">
+                            No recipes found matching your filter selection rules.
+                        </p>
+                        <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium group-hover:text-zinc-600 dark:group-hover:text-zinc-400 transition-colors">
+                            Click anywhere inside this area to reset active parameters.
+                        </p>
+                    </div>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">

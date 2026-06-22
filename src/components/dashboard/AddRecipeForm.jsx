@@ -1,13 +1,43 @@
 /* eslint-disable @next/next/no-img-element */
-// components/dashboard/AddRecipeForm.jsx
 "use client";
 
-import React, { useState } from 'react';
-import { Plus, Trash2, Upload, Loader2, ChefHat, Clock, AlertCircle } from 'lucide-react';
-import { Select, Label, ListBox, TextField, Input, Description, FieldError, Button, toast, TextArea } from '@heroui/react';
+import React, { useState, useEffect } from 'react';
+import { 
+    Plus, 
+    Trash2, 
+    Upload, 
+    Loader2, 
+    ChefHat, 
+    Clock, 
+    AlertCircle, 
+    Crown, 
+    Lock, 
+    Sparkles, 
+    ArrowRight 
+} from 'lucide-react';
+import { 
+    Select, 
+    Label, 
+    ListBox, 
+    TextField, 
+    Input, 
+    Description, 
+    FieldError, 
+    Button, 
+    Card, 
+    Spinner,
+    Chip,
+    toast
+} from '@heroui/react';
+import Link from 'next/link';
+import { getRecipeByUser } from '@/lib/api/recipe';
 import { createRecipe } from '@/lib/actions/recipe';
 
 export default function AddRecipeForm({ user }) {
+    // Premium limits check conditions
+    const [recipeCount, setRecipeCount] = useState(0);
+    const [isCheckingLimit, setIsCheckingLimit] = useState(true);
+
     // Form State mapped to your exact database schema instructions
     const [formData, setFormData] = useState({
         recipeName: '',
@@ -38,6 +68,27 @@ export default function AddRecipeForm({ user }) {
     const categories = ["Breakfast", "Lunch", "Dinner", "Dessert", "Snacks", "Beverages"];
     const cuisines = ["Bangladeshi", "Italian", "Mexican", "Indian", "Chinese", "French", "Japanese", "American", "Mediterranean"];
     const difficulties = ["Easy", "Medium", "Hard"];
+
+    const isPremium = user?.plan && user.plan !== "user_free";
+
+    // Safely pull initial statistics context to check limit rules asynchronously
+    useEffect(() => {
+        const checkExistingRecipesCount = async () => {
+            try {
+                setIsCheckingLimit(true);
+                const recipesData = await getRecipeByUser();
+                const recipes = Array.isArray(recipesData) ? recipesData : [];
+                setRecipeCount(recipes.length);
+            } catch (err) {
+                console.error("Failed calculating current storage validation matrices:", err);
+            } finally {
+                setIsCheckingLimit(false);
+            }
+        };
+        checkExistingRecipesCount();
+    }, []);
+
+    const isLimitReached = !isPremium && recipeCount >= 2;
 
     // ImgBB Upload Handler
     const handleImageUpload = async (e) => {
@@ -113,12 +164,12 @@ export default function AddRecipeForm({ user }) {
                 updatedAt: new Date().toISOString()
             };
 
-            // console.log("Submitting structured database payload matching schema:", finalPayload);
             await createRecipe(finalPayload);
+            toast.success("Recipe submitted successfully!",{
+                description: "You added a delicious recipe",
+                timeout: 2000
+            });
 
-            toast.success("Recipe submitted successfully!");
-
-            // Reset form fields back to blank
             setFormData({
                 recipeName: '',
                 recipeImage: '',
@@ -136,17 +187,85 @@ export default function AddRecipeForm({ user }) {
                 isFeatured: false,
                 status: 'pending'
             });
-
             setErrors({});
+            setRecipeCount(prev => prev + 1);
 
         } catch (err) {
-            // console.error("Submission exception context: ", err);
             toast.error("Failed to submit recipe.");
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    // 1. Initial State Placeholder during loading hook operations
+    if (isCheckingLimit) {
+        return (
+            <div className="w-full flex flex-col items-center justify-center p-12 min-h-80 border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm">
+                <Spinner color="primary" label="Verifying storage allocations..." size="lg" />
+            </div>
+        );
+    }
+
+    // 2. Interactive Upgrade Block when standard free tier limits are exceeded
+    if (isLimitReached) {
+        return (
+            <Card className="w-full border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-sm space-y-8 max-w-3xl mx-auto transition-all duration-300">
+                <div className="flex flex-col items-center text-center space-y-4 max-w-xl mx-auto">
+                    <div className="relative flex items-center justify-center size-16 rounded-2xl bg-warning-50 dark:bg-warning-950/20 text-warning shadow-inner">
+                        <Lock className="size-6 absolute text-zinc-400 -translate-y-3 translate-x-3 scale-75" />
+                        <ChefHat className="size-8" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <Chip color="warning" className="font-semibold text-xs px-2.5">
+                            <span className="flex items-center gap-1"><Crown className="size-3" /> Storage Limit Reached</span>
+                        </Chip>
+                        <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                            Unlock Unlimited Recipe Creations
+                        </h2>
+                        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                            You have used all <strong className="text-zinc-900 dark:text-zinc-200">{recipeCount}/2 slots</strong> allocated to our basic cooking tier. Upgrade to Pro to expand your dynamic digital canvas space instantly.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div className="p-4 border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl flex items-start gap-3">
+                        <Sparkles className="size-5 text-warning shrink-0 mt-0.5" />
+                        <div>
+                            <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Infinite Storage Workspace</h4>
+                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Publish unlimited culinary blueprints onto your dynamic global catalog.</p>
+                        </div>
+                    </div>
+                    <div className="p-4 border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl flex items-start gap-3">
+                        <Crown className="size-5 text-primary shrink-0 mt-0.5" />
+                        <div>
+                            <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Featured Placement Boost</h4>
+                            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Push custom creations higher inside community exploration and feed index engines.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between p-4 rounded-xl border border-warning-200 bg-warning-50/50 dark:bg-warning-950/10 gap-4">
+                    <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                        Ready to transition into a Professional Chef?
+                    </span>
+                    <Link href="/dashboard/user/billing" className="w-full sm:w-auto inline-block">
+                        <Button 
+                            as="span" 
+                            color="warning" 
+                            endContent={<ArrowRight className="size-4" />}
+                            className="w-full sm:w-auto font-bold rounded-xl text-sm h-10 px-5 cursor-pointer shadow-sm"
+                        >
+                            Upgrade to Pro Account
+                        </Button>
+                    </Link>
+                </div>
+            </Card>
+        );
+    }
+
+    // 3. Normal Active Input Form Structure (Rendered if allocation is under 2 entries)
     return (
         <form onSubmit={handleSubmit} className="space-y-6 bg-background-secondary p-4 rounded-2xl">
             {/* Image Upload Banner Box */}
@@ -312,7 +431,7 @@ export default function AddRecipeForm({ user }) {
                 <div className="p-5 border border-default rounded-2xl bg-white dark:bg-zinc-900 space-y-4">
                     <div className="flex items-center justify-between">
                         <h3 className="text-sm font-semibold">Ingredients List</h3>
-                        <Button size="sm" variant="flat" startContent={<Plus className="size-4" />} onClick={() => addArrayField('ingredients')}>Add Item</Button>
+                        <Button size="sm" startContent={<Plus className="size-4" />} onClick={() => addArrayField('ingredients')}>Add Item</Button>
                     </div>
                     <div className="space-y-2">
                         {formData.ingredients.map((ingredient, i) => (
@@ -325,7 +444,7 @@ export default function AddRecipeForm({ user }) {
                                         className="w-full min-h-10 border border-default rounded-xl px-3 flex items-center bg-zinc-50 dark:bg-zinc-900/50 text-sm outline-none"
                                     />
                                 </TextField>
-                                <Button isIconOnly size="sm" variant="light" color="danger" onClick={() => removeArrayField(i, 'ingredients')} isDisabled={formData.ingredients.length <= 1}>
+                                <Button isIconOnly size="sm" color="danger" onClick={() => removeArrayField(i, 'ingredients')} isDisabled={formData.ingredients.length <= 1}>
                                     <Trash2 className="size-4" />
                                 </Button>
                             </div>
@@ -337,7 +456,7 @@ export default function AddRecipeForm({ user }) {
                 <div className="p-5 border border-default rounded-2xl bg-white dark:bg-zinc-900 space-y-4">
                     <div className="flex items-center justify-between">
                         <h3 className="text-sm font-semibold">Instructions Sequence</h3>
-                        <Button size="sm" variant="flat" startContent={<Plus className="size-4" />} onClick={() => addArrayField('instructions')}>Add Step</Button>
+                        <Button size="sm" startContent={<Plus className="size-4" />} onClick={() => addArrayField('instructions')}>Add Step</Button>
                     </div>
                     <div className="space-y-2">
                         {formData.instructions.map((step, i) => (
@@ -352,7 +471,7 @@ export default function AddRecipeForm({ user }) {
                                         className="w-full border border-default rounded-xl p-3 bg-zinc-50 dark:bg-zinc-900/50 text-sm outline-none resize-none focus:border-primary transition-colors"
                                     />
                                 </TextField>
-                                <Button isIconOnly size="sm" variant="light" color="danger" className="mt-1" onClick={() => removeArrayField(i, 'instructions')} isDisabled={formData.instructions.length <= 1}>
+                                <Button isIconOnly size="sm" color="danger" className="mt-1" onClick={() => removeArrayField(i, 'instructions')} isDisabled={formData.instructions.length <= 1}>
                                     <Trash2 className="size-4" />
                                 </Button>
                             </div>
@@ -360,10 +479,11 @@ export default function AddRecipeForm({ user }) {
                     </div>
                 </div>
             </div>
+
             {/* Description Input */}
             <TextField isInvalid={!!errors.description} className="flex flex-col gap-1.5 w-full">
                 <Label className="text-xs font-medium text-zinc-600 dark:text-zinc-400 px-1">Description</Label>
-                <TextArea
+                <textarea
                     value={formData.description}
                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Briefly describe what makes this recipe special..."
@@ -373,6 +493,7 @@ export default function AddRecipeForm({ user }) {
                 <Description className="text-xs text-zinc-400 dark:text-zinc-500 px-1">Give your dish an attractive summary description.</Description>
                 {errors.description && <FieldError className="text-xs text-danger px-1">{errors.description}</FieldError>}
             </TextField>
+
             {/* Submission Trigger */}
             <div className="flex justify-end pt-4 border-t border-default">
                 <Button type="submit" color="primary" className="font-semibold" isLoading={isSubmitting} startContent={!isSubmitting && <ChefHat className="size-4" />}>
