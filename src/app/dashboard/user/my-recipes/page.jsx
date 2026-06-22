@@ -3,11 +3,11 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { PlusCircle, UtensilsCrossed, Loader2, Eye, Edit3, Trash2, Calendar, Clock } from 'lucide-react';
+import { PlusCircle, UtensilsCrossed, Loader2, Eye, Edit3, Calendar, Clock } from 'lucide-react';
 import { Button } from '@heroui/react';
 import Link from 'next/link';
 import { getRecipeByUser } from '@/lib/api/recipe';
-import { deleteRecipe } from '@/lib/actions/recipe';
+import DeleteRecipeModal from '@/components/dashboard/DeleteRecipeModal';
 
 export default function UserMyRecipePage() {
     const [recipes, setRecipes] = useState([]);
@@ -43,23 +43,9 @@ export default function UserMyRecipePage() {
         fetchMyRecipes();
     }, []);
 
-    // --- Action: Delete Recipe ---
-    const handleDeleteRecipe = async (id) => {
-        if (!confirm("Are you sure you want to delete this recipe permanently?")) return;
-
-        try {
-            const res = await deleteRecipe(id);
-
-            if (res.success) {
-                setRecipes(prev => prev.filter(item => (item._id || item.id) !== id));
-                alert("Recipe removed successfully!");
-            } else {
-                alert(res.error || "Failed to delete the recipe. Please try again.");
-            }
-        } catch (err) {
-            console.error("Error removing recipe catalog index:", err);
-            alert(err.message || "An unexpected network error occurred.");
-        }
+    // --- Action: Handle local state updates after modal deletion hook ---
+    const handleDeleteSuccess = (deletedId) => {
+        setRecipes((prev) => prev.filter((item) => (item._id || item.id) !== deletedId));
     };
 
     // --- State Layout Render 1: Loading Spinner ---
@@ -92,24 +78,21 @@ export default function UserMyRecipePage() {
                     <h1 className="text-xl font-black tracking-tight sm:text-2xl text-foreground">My Culinary Creations</h1>
                     <p className="text-xs text-zinc-400 mt-0.5">Manage, modify, or remove recipes published under your account credentials.</p>
                 </div>
-                <Link
-                    href="/dashboard/user/add-recipe"
-                >
+                <Link href="/dashboard/user/add-recipe">
                     <Button
                         color="primary"
                         size="sm"
-                        className="font-bold shadow-sm self-start sm:self-auto"
+                        className="font-bold shadow-sm self-start sm:self-auto gap-1.5"
                     >
-                        <span><PlusCircle className="size-4" /></span>
+                        <PlusCircle className="size-4" />
                         Create New Recipe
                     </Button>
                 </Link>
-
             </div>
 
             {/* Empty Fallback Frame */}
             {recipes.length === 0 ? (
-                <div className="border border-dashed border-default bg-zinc-50/50 dark:bg-zinc-900/10 rounded-2xl py-16 px-4 text-center max-w-md mx-auto mt-8 space-y-4">
+                <div className="border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/10 rounded-2xl py-16 px-4 text-center max-w-md mx-auto mt-8 space-y-4">
                     <div className="size-12 rounded-xl bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mx-auto border border-default">
                         <UtensilsCrossed className="size-5 text-zinc-400" />
                     </div>
@@ -119,7 +102,7 @@ export default function UserMyRecipePage() {
                     </div>
                     <Button
                         as={Link}
-                        href="/dashboard/user/create-recipe"
+                        href="/dashboard/user/add-recipe"
                         color="primary"
                         size="sm"
                         className="font-bold"
@@ -143,8 +126,6 @@ export default function UserMyRecipePage() {
                         <tbody className="divide-y divide-default">
                             {recipes.map((item) => {
                                 const recipeId = item._id || item.id;
-
-                                // Format dates neatly if available
                                 const formattedDate = item.createdAt
                                     ? new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
                                     : 'Recent';
@@ -186,12 +167,13 @@ export default function UserMyRecipePage() {
 
                                         {/* Column 4: System Verification Status Tag */}
                                         <td className="p-4">
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border ${item.status === 'approved'
+                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
+                                                item.status === 'approved'
                                                 ? 'bg-success-50 text-success border-success-200 dark:bg-success-950/20 dark:border-success-800/30'
                                                 : item.status === 'pending'
                                                     ? 'bg-warning-50 text-warning border-warning-200 dark:bg-warning-950/20 dark:border-warning-800/30'
                                                     : 'bg-danger-50 text-danger border-danger-200 dark:bg-danger-950/20 dark:border-danger-800/30'
-                                                }`}>
+                                            }`}>
                                                 {item.status || 'pending'}
                                             </span>
                                         </td>
@@ -199,11 +181,8 @@ export default function UserMyRecipePage() {
                                         {/* Column 5: Action Controls */}
                                         <td className="p-4 text-right">
                                             <div className="flex items-center justify-end gap-1.5">
-
                                                 {/* View Button */}
-                                                <Link
-                                                    href={`/recipes/${recipeId}`}
-                                                >
+                                                <Link href={`/recipes/${recipeId}`}>
                                                     <Button
                                                         variant="light"
                                                         size="sm"
@@ -216,9 +195,7 @@ export default function UserMyRecipePage() {
                                                 </Link>
 
                                                 {/* Edit / Update Button */}
-                                                <Link
-                                                    href={`/dashboard/user/edit-recipe/${recipeId}`}
-                                                >
+                                                <Link href={`/dashboard/user/edit-recipe/${recipeId}`}>
                                                     <Button
                                                         variant="light"
                                                         color="primary"
@@ -231,19 +208,11 @@ export default function UserMyRecipePage() {
                                                     </Button>
                                                 </Link>
 
-                                                {/* Delete Button */}
-                                                <Button
-                                                    variant="light"
-                                                    color="danger"
-                                                    size="sm"
-                                                    isIconOnly
-                                                    title="Delete Permanently"
-                                                    onClick={() => handleDeleteRecipe(recipeId)}
-                                                    className="hover:bg-danger-50 dark:hover:bg-danger-950/30"
-                                                >
-                                                    <Trash2 className="size-4" />
-                                                </Button>
-
+                                                {/* Fixed Delete Button Modal Trigger */}
+                                                <DeleteRecipeModal 
+                                                    recipe={item} 
+                                                    onDeleteSuccess={handleDeleteSuccess} 
+                                                />
                                             </div>
                                         </td>
                                     </tr>

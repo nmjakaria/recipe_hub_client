@@ -88,7 +88,7 @@ export default function Navbar() {
                             {user ? (
                                 <>
                                     {/* DYNAMIC PROFILE IMAGE / INITIAL BADGE */}
-                                    <Link href="/dashboard/my-profile" aria-label="Profile" className="hover:opacity-85 transition-opacity">
+                                    <Link href={`/dashboard/${user?.role}/my-profile`} aria-label="Profile" className="hover:opacity-85 transition-opacity">
                                         <div className="relative flex h-9 w-9 shrink-0 overflow-hidden rounded-full ring-2 ring-violet-500/30 dark:ring-violet-400/30">
                                             {user.image ? (
                                                 <img className="aspect-square h-full w-full object-cover" src={user.image} alt={user.name || "User"} />
@@ -175,7 +175,7 @@ export default function Navbar() {
                                 <div className="flex flex-col gap-4 px-4">
                                     {/* Mobile Profile Display */}
                                     <Link
-                                        href="/dashboard/my-profile"
+                                        href={`/dashboard/${user?.role}/my-profile`}
                                         onClick={() => setIsMenuOpen(false)}
                                         className="flex items-center gap-3 group"
                                     >

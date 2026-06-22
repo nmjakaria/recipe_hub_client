@@ -41,7 +41,7 @@ export default function Error({ error, reset }) {
                     <Button
                         color="primary"
                         onPress={() => reset()}
-                        className="w-full sm:w-auto font-bold rounded-xl shadow-md shadow-primary-500/10 bg-gradient-to-r from-primary to-primary-600 text-white px-6 h-11"
+                        className="w-full sm:w-auto font-bold rounded-xl shadow-md shadow-primary-500/10 bg-linear-to-r from-primary to-primary-600 text-white px-6 h-11"
                         startContent={<RotateCcw className="size-4" />}
                     >
                         Try Again
@@ -73,7 +73,7 @@ export default function Error({ error, reset }) {
 
                     {showDetails && (
                         <div className="mt-3 text-left p-4 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/80 rounded-2xl overflow-x-auto max-h-40 shadow-inner">
-                            <p className="text-xs font-bold text-red-600 dark:text-red-400 mb-1 break-words">
+                            <p className="text-xs font-bold text-red-600 dark:text-red-400 mb-1 wrap-break-word">
                                 Error: {error?.message || "An unclassified component crash occurred."}
                             </p>
                             {error?.digest && (

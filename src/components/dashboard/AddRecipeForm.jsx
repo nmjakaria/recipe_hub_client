@@ -227,7 +227,7 @@ export default function AddRecipeForm({ user }) {
                             </Select.Value>
                             <Select.Indicator />
                         </Select.Trigger>
-                        <Select.Popover className="bg-white dark:bg-zinc-950 border border-default rounded-xl shadow-xl p-1 min-w-[240px] z-50">
+                        <Select.Popover className="bg-white dark:bg-zinc-950 border border-default rounded-xl shadow-xl p-1 min-w-60 z-50">
                             <ListBox className="gap-0.5 flex flex-col">
                                 {categories.map((cat) => (
                                     <ListBox.Item
@@ -257,7 +257,7 @@ export default function AddRecipeForm({ user }) {
                             </Select.Value>
                             <Select.Indicator />
                         </Select.Trigger>
-                        <Select.Popover className="bg-white dark:bg-zinc-950 border border-default rounded-xl shadow-xl p-1 min-w-[240px] z-50">
+                        <Select.Popover className="bg-white dark:bg-zinc-950 border border-default rounded-xl shadow-xl p-1 min-w-60 z-50">
                             <ListBox className="gap-0.5 flex flex-col">
                                 {cuisines.map((cui) => (
                                     <ListBox.Item
@@ -287,7 +287,7 @@ export default function AddRecipeForm({ user }) {
                             </Select.Value>
                             <Select.Indicator />
                         </Select.Trigger>
-                        <Select.Popover className="bg-white dark:bg-zinc-950 border border-default rounded-xl shadow-xl p-1 min-w-[240px] z-50">
+                        <Select.Popover className="bg-white dark:bg-zinc-950 border border-default rounded-xl shadow-xl p-1 min-w-60 z-50">
                             <ListBox className="gap-0.5 flex flex-col">
                                 {difficulties.map((diff) => (
                                     <ListBox.Item

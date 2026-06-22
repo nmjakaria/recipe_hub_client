@@ -49,7 +49,7 @@ export default function ProfileClient({ initialUser }) {
 
             {/* ── PROFILE METRICS HEADER ── */}
             <div className="relative bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-[2rem] p-6 sm:p-8 shadow-sm overflow-hidden flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary-500/10 to-transparent rounded-bl-full pointer-events-none" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-primary-500/10 to-transparent rounded-bl-full pointer-events-none" />
 
                 <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
                     <div className="relative">

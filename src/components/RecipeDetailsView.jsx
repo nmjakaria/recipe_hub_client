@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useState } from 'react';
@@ -76,18 +77,42 @@ export default function RecipeDetailsView({ recipe }) {
     // --- Action 3: Favorite Handler (Connected to Express Endpoint) ---
     const handleFavoriteToggle = async () => {
         const fallbackState = isFavorited;
-        setIsFavorited(!fallbackState); // Optimistic UI Update
+
+        // 1. Optimistic UI Update (Instant toggle response for the user)
+        setIsFavorited(!fallbackState);
 
         try {
-            await createFavorite(recipeId, recipeName)
-            toast.success(`You are Liked ${recipeName}`, {
-                description: "Best of Luck for you.",
-                timeout: 2000,
-            });
+            const favoriteRecipeData = { recipeName, recipeImage, category, cuisineType };
+
+            // 2. Capture the server response array
+            const res = await createFavorite(recipeId, favoriteRecipeData);
+
+            // 3. Keep the UI perfectly synced with the actual database outcome
+            setIsFavorited(res?.favorited);
+
+            // 4. Fire HeroUI toasts dynamically based on the server action status
+            if (res?.favorited) {
+                toast.success("Added to Favorites", {
+                    description: `Successfully pinned ${recipeName} to your collection!`,
+                    timeout: 2000,
+                });
+            } else {
+                toast.success("Removed", {
+                    description: `Removed ${recipeName} from your favorite collection!`,
+                    timeout: 2000,
+                });
+            }
 
         } catch (err) {
             console.error("Failed updating bookmark arrays:", err);
-            setIsFavorited(fallbackState); // Rollback on network failure
+
+            // 5. Rollback UI instantly if the network fails or request is unauthorized
+            setIsFavorited(fallbackState);
+
+            toast.error("Error", {
+                description: "Could not update your bookmark selection.",
+                timeout: 2000,
+            });
         }
     };
 

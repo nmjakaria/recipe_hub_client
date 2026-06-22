@@ -93,7 +93,7 @@ export default function SignupPage() {
                 <div
                     className="w-full h-full rounded-[2.5rem] bg-cover bg-center shadow-md border border-zinc-200/50 dark:border-zinc-900"
                     style={{
-                        backgroundImage: `url('https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=1600&auto=format&fit=crop')`
+                        backgroundImage: `url('https://images.unsplash.com/photo-1744036031806-48bd0a7d813e?q=80&w=1600&auto=format&fit=crop')`
                     }}
                 >
                     {/* Dark blending gradient overlay layout with text container */}

@@ -10,8 +10,8 @@ export const createLikeUnlike = async (recipeId) => {
     return serverMutation(`/api/recipes/${recipeId}/like`);
 };
 
-export const createFavorite = async (recipeId, recipeName)  => {
-    return serverMutation(`/api/recipes/${recipeId}/favorite`, { recipeName })
+export const createFavorite = async (recipeId, favoriteRecipeData) => {
+    return serverMutation(`/api/recipes/${recipeId}/favorite`, { favoriteRecipeData })
 }
 
 export const createRecipeReport = async (recipeId, reportReason) => {
@@ -25,3 +25,8 @@ export const updateRecipe = async (id, updatedData) => {
 export const deleteRecipe = async (id) => {
     return serverMutation(`/api/recipes/${id}`, {}, 'DELETE');
 };
+
+
+export const unfavoriteRecipe = async (favoriteId) => {
+    return serverMutation(`/api/user/my-favorite/${favoriteId}`, {}, 'DELETE');
+}
