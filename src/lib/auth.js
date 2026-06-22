@@ -61,14 +61,34 @@ export const auth = betterAuth({
             isBlocked: { type: "boolean", default: false },
         },
     },
-    session:{
+    databaseHooks: {
+        user: {
+            create: {
+                before: async (user) => {
+                    // This intercepts standard fields + Google profile data
+                    return {
+                        data: {
+                            ...user,
+                            // If these fields weren't sent (Google doesn't), use defaults
+                            role: user.role || "user",
+                            plan: user.plan || "user_free",
+                            // Use ?? (nullish coalescing) to allow `false` to be passed,
+                            // only defaulting if it's undefined or null.
+                            isBlocked: user.isBlocked ?? false,
+                        },
+                    };
+                },
+            },
+        },
+    },
+    session: {
         cookieCache: {
             enabled: true,
             strategy: "jwt",
             maxAge: 5 * 24 * 60 * 60
         }
     },
-    plugins:[
+    plugins: [
         jwt()
     ]
 });
