@@ -1,3 +1,5 @@
+import CookingPaths from "@/components/CookingPaths";
+import CreatorSpotlight from "@/components/CreatorSpotlight";
 import HeroBanner from "@/components/HeroBanner";
 import Navbar from "@/components/Navbar";
 import { Toast } from "@heroui/react";
@@ -7,6 +9,8 @@ export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <HeroBanner />
+      <CreatorSpotlight />
+      <CookingPaths />
     </div>
   );
 }

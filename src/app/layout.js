@@ -4,6 +4,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Navbar from "@/components/Navbar";
 import { Toast } from "@heroui/react";
+import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +38,8 @@ export default function RootLayout({ children }) {
             className="top-6 right-6" />
           <Navbar />
           {children}
+          <Footer />
+          <SmoothScroll />
         </Providers>
       </body>
     </html>

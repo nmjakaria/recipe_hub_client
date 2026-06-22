@@ -48,13 +48,13 @@ export default function Navbar() {
                 {/* LOGO AREA (Left Column) */}
                 <div className="flex items-center justify-start">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-violet-600 to-fuchsia-500 shadow-lg group-hover:scale-105 transition-transform duration-200">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-orange-500 to-rose-500 shadow-lg group-hover:scale-105 transition-transform duration-200">
                             <span className="text-xl font-bold text-white">R</span>
                         </div>
                         <div className="hidden leading-none sm:block">
-                            <h1 className="text-lg font-bold text-foreground font-display tracking-tight">
-                                Recipe Hub
-                            </h1>
+                            <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
+                                Recipe<span className="bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Hub</span>
+                            </span>
                         </div>
                     </Link>
                 </div>
