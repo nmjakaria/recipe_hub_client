@@ -53,7 +53,7 @@ export default function Navbar() {
                         </div>
                         <div className="hidden leading-none sm:block">
                             <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                                Recipe<span className="bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Hub</span>
+                                Recipe<span className="bg-linear-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Hub</span>
                             </span>
                         </div>
                     </Link>

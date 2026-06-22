@@ -49,8 +49,8 @@ export default function HeroBanner() {
             
                 {/* ── BACKGROUND CANVAS LAYER ── */}
                 <div className="absolute inset-0 bg-zinc-50 dark:bg-zinc-950 -z-20" />
-                <div className="absolute -top-40 -left-20 w-[450px] h-[450px] rounded-full bg-gradient-to-br from-amber-200/50 to-orange-200/30 blur-[100px] dark:from-amber-900/10 -z-10" />
-                <div className="absolute -bottom-20 right-10 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-rose-200/40 to-primary-200/20 blur-[120px] dark:from-rose-950/10 -z-10" />
+                <div className="absolute -top-40 -left-20 w-112.5 h-112.5 rounded-full bg-linear-to-br from-amber-200/50 to-orange-200/30 blur-[100px] dark:from-amber-900/10 -z-10" />
+                <div className="absolute -bottom-20 right-10 w-125 h-125 rounded-full bg-linear-to-tr from-rose-200/40 to-primary-200/20 blur-[120px] dark:from-rose-950/10 -z-10" />
                 {/* ── MAIN LAYOUT CONTENT ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-12 lg:py-16 px-6 sm:px-10">
             
@@ -63,7 +63,7 @@ export default function HeroBanner() {
                     >
                         {/* Animated Badge */}
                         <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md px-4 py-2 rounded-full border border-zinc-200/80 dark:border-zinc-800 shadow-sm">
-                            <Sparkles className="size-4 text-amber-500 animate-spin [animation-duration:6s]" />
+                            <Sparkles className="size-4 text-amber-500 animate-spin animation-duration-[6s]" />
                             <span className="text-xs font-bold tracking-wider text-zinc-700 dark:text-zinc-300 uppercase">The Foodie Community</span>
                         </motion.div>
                         {/* Bold Colorful Typography */}
@@ -83,7 +83,7 @@ export default function HeroBanner() {
                                 <Button
                                     color="primary"
                                     size="lg"
-                                    className="font-extrabold rounded-2xl shadow-xl shadow-primary-500/20 bg-gradient-to-r from-primary to-primary-600 px-8 group"
+                                    className="font-extrabold rounded-2xl shadow-xl shadow-primary-500/20 bg-linear-to-r from-primary to-primary-600 px-8 group"
                                     endContent={<UtensilsCrossed className="size-4 group-hover:rotate-12 transition-transform" />}
                                 >
                                     Explore Dishes
@@ -105,10 +105,10 @@ export default function HeroBanner() {
                     {/* ── RIGHT SIDE: FLOATING SLIDER ── */}
                     <div className="lg:col-span-7 w-full relative">
                         {/* Decorative backframe accent */}
-                        <div className="absolute -inset-2 bg-gradient-to-tr from-amber-500 to-rose-500 rounded-[2.5rem] opacity-10 blur-xl" />
+                        <div className="absolute -inset-2 bg-linear-to-tr from-amber-500 to-rose-500 rounded-[2.5rem] opacity-10 blur-xl" />
             
                         {/* Main Image Slider Wrapper */}
-                        <div className="relative border-8 border-white dark:border-zinc-900 bg-white dark:bg-zinc-900 w-full h-[320px] sm:h-[420px] lg:h-[500px] rounded-[2.2rem] overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)]">
+                        <div className="relative border-8 border-white dark:border-zinc-900 bg-white dark:bg-zinc-900 w-full h-80 sm:h-105 lg:h-125 rounded-[2.2rem] overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)]">
             
                             {/* Embla Slider */}
                             <div className="w-full h-full cursor-grab active:cursor-grabbing" ref={emblaRef}>
@@ -116,7 +116,7 @@ export default function HeroBanner() {
                                     {sliderImages.map((src, index) => (
                                         <div key={index} className="flex-[0_0_100%] min-w-0 h-full relative overflow-hidden">
                                             {/* Dynamic darkening tint overlay */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 z-10" />
+                                            <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-black/10 z-10" />
             
                                             {/* Image Asset Rendering with Ken Burns pan animation */}
                                             {/* eslint-disable-next-line @next/next/no-img-element */}

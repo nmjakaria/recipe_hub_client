@@ -37,7 +37,7 @@ export default function CreatorSpotlight() {
     return (
         <section className="relative w-full max-w-7xl mx-auto my-20 px-4 sm:px-6 lg:px-8">
             {/* Ambient Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full bg-orange-200/20 dark:from-orange-950/10 blur-[120px] -z-10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-75 rounded-full bg-orange-200/20 dark:from-orange-950/10 blur-[120px] -z-10" />
 
             {/* Header Block */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
@@ -46,7 +46,7 @@ export default function CreatorSpotlight() {
                         <Award className="size-3.5" /> Top Artisans
                     </div>
                     <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                        Meet the <span className="bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Masterminds</span>
+                        Meet the <span className="bg-linear-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Masterminds</span>
                     </h2>
                     <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md">
                         Follow elite home cooks and international chefs turning raw culinary craft into easy-to-follow artwork.
@@ -72,7 +72,7 @@ export default function CreatorSpotlight() {
                         className="group bg-white/70 dark:bg-zinc-900/60 backdrop-blur-md border border-zinc-200/60 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-orange-200 dark:hover:border-orange-950/50 transition-all duration-300 relative overflow-hidden"
                     >
                         {/* Decorative Card Light Accent */}
-                        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-orange-500/5 to-transparent rounded-bl-full pointer-events-none" />
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-orange-500/5 to-transparent rounded-bl-full pointer-events-none" />
 
                         <div className="flex items-center gap-4 mb-5">
                             <div className="relative shrink-0">
@@ -82,7 +82,7 @@ export default function CreatorSpotlight() {
                                     alt={creator.name} 
                                     className="size-16 rounded-2xl object-cover border-2 border-white dark:border-zinc-800 shadow-md group-hover:scale-105 transition-transform duration-300" 
                                 />
-                                <div className="absolute -bottom-1 -right-1 bg-gradient-to-r from-orange-500 to-rose-500 text-white p-1 rounded-lg shadow">
+                                <div className="absolute -bottom-1 -right-1 bg-linear-to-r from-orange-500 to-rose-500 text-white p-1 rounded-lg shadow">
                                     <Flame className="size-3" />
                                 </div>
                             </div>

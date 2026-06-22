@@ -51,10 +51,10 @@ export default function CookingPaths() {
             {/* Header Block */}
             <div className="text-center max-w-xl mx-auto mb-12 space-y-3">
                 <div className="inline-flex items-center gap-1.5 bg-rose-50 dark:bg-rose-950/40 text-rose-600 px-3 py-1 rounded-full border border-rose-100 dark:border-rose-900/40 text-xs font-bold uppercase tracking-wider">
-                    <Compass className="size-3.5 animate-spin [animation-duration:10s]" /> Smart Curation
+                    <Compass className="size-3.5 animate-spin animation-duration-[10s]" /> Smart Curation
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                    Choose Your <span className="bg-gradient-to-r from-rose-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">Flavor Path</span>
+                    Choose Your <span className="bg-linear-to-r from-rose-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">Flavor Path</span>
                 </h2>
                 <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400">
                     Skip standard lists. Select a tailored atmospheric node calibrated around your mood, lifestyle, or immediate time constraints.
@@ -70,7 +70,7 @@ export default function CookingPaths() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.4, delay: idx * 0.08 }}
-                            className={`h-full bg-gradient-to-br ${path.bgGrad} bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800 rounded-[2rem] p-6 shadow-sm transition-all duration-300 ${path.borderHover} hover:shadow-md flex flex-col justify-between`}
+                            className={`h-full bg-linear-to-br ${path.bgGrad} bg-white dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800 rounded-[2rem] p-6 shadow-sm transition-all duration-300 ${path.borderHover} hover:shadow-md flex flex-col justify-between`}
                         >
                             <div className="space-y-4">
                                 {/* Icon container drop frame */}

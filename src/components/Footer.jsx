@@ -44,11 +44,11 @@ export default function Footer() {
                     {/* Column 1: Identity & Description (4 Cols) */}
                     <div className="lg:col-span-4 space-y-5">
                         <Link href="/" className="inline-flex items-center gap-2.5 group">
-                            <div className="p-2.5 bg-gradient-to-br from-orange-500 to-rose-500 rounded-xl shadow-md shadow-orange-500/10 text-white group-hover:rotate-6 transition-transform duration-300">
+                            <div className="p-2.5 bg-linear-to-br from-orange-500 to-rose-500 rounded-xl shadow-md shadow-orange-500/10 text-white group-hover:rotate-6 transition-transform duration-300">
                                 <UtensilsCrossed className="size-5" />
                             </div>
                             <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                                Recipe<span className="bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Hub</span>
+                                Recipe<span className="bg-linear-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Hub</span>
                             </span>
                         </Link>
                         <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xs">
@@ -138,7 +138,7 @@ export default function Footer() {
                                     color="primary" 
                                     size="sm"
                                     type="submit" 
-                                    className="bg-gradient-to-r from-orange-500 to-rose-500 rounded-xl shadow-md text-white px-4 shrink-0"
+                                    className="bg-linear-to-r from-orange-500 to-rose-500 rounded-xl shadow-md text-white px-4 shrink-0"
                                 >
                                     <Send className="size-3.5" />
                                 </Button>
