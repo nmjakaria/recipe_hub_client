@@ -6,22 +6,29 @@ import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { auth } from './lib/auth'
 
-
-// This function can be marked `async` if using `await` inside
 export async function proxy(request) {
     const session = await auth.api.getSession({
         headers: await headers()
     })
-    if (!session) {
-        const loginUrl = new URL('/auth/signin', request.url)
-        // loginUrl.searchParams.set('message', 'Please login to view this page')
-        // loginUrl.searchParams.set('type', 'error')
 
+    if (!session) {
+        // 1. get the URL which is trying to go to by user
+        const currentUrl = request.nextUrl.pathname + request.nextUrl.search;
+
+        // 2. create New ULR object for singin page
+        const loginUrl = new URL('/auth/signin', request.url)
+
+        // 3. set current URL to redirect in searchParams
+        loginUrl.searchParams.set('redirect', currentUrl)
+        loginUrl.searchParams.set('message', 'login_required')
+
+        // 4. redirect user
         return NextResponse.redirect(loginUrl)
     }
+
     return NextResponse.next()
 }
 
 export const config = {
-    matcher: ['/dashboard/:path'],
+    matcher: ['/dashboard/:path*'],
 }

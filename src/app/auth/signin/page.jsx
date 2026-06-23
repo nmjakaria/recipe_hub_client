@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Button, Link, TextField, Label, InputGroup, Input, toast } from "@heroui/react";
 import { Eye, EyeSlash, At, ShieldKeyhole } from "@gravity-ui/icons";
 import { authClient, signIn } from "@/lib/auth-client";
@@ -16,6 +16,21 @@ export default function SigninPage() {
 
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get("redirect") || "/";
+    const message = searchParams.get("message");
+
+    useEffect(() => {
+        if (message === "login_required") {
+            toast.warning("Authentication Required", {
+                description: "Please sign in to access that premium page.",
+                timeout: 3000,
+            });
+
+            // clear the massage parameter from the browser history for clean URL
+            const newUrl = window.location.pathname +
+                (redirectTo !== "/" ? `?redirect=${encodeURIComponent(redirectTo)}` : "");
+            window.history.replaceState({}, "", newUrl);
+        }
+    }, [message, redirectTo]);
 
     // UI States
     const [isVisible, setIsVisible] = useState(false);
@@ -87,7 +102,7 @@ export default function SigninPage() {
                                 Recipe<span className="bg-linear-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent">Hub</span>
                             </span>
                         </Link>
-                        
+
                         {/* Subtext Context Details */}
                         <div className="space-y-1">
                             <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">Welcome back</h1>
