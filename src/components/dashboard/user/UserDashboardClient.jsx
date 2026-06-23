@@ -77,7 +77,7 @@ export default function UserDashboardClient({ user }) {
     const isLimitReached = !isPremium && stats.totalRecipes >= 2;
 
     return (
-        <motion.div 
+        <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="show"
@@ -87,7 +87,14 @@ export default function UserDashboardClient({ user }) {
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
                 <div className="space-y-1.5">
                     <div className="flex items-center gap-3">
-                        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Overview</h1>
+
+                        <div className="relative group">
+                            <h1 className="text-3xl font-black tracking-tight bg-linear-to-r from-amber-500 via-orange-500 to-rose-500 bg-clip-text text-transparent select-none relative z-10">
+                                Overview
+                            </h1>
+                            {/* Underline decorative glow mesh */}
+                            <span className="absolute -bottom-1 left-0 w-12 h-1 rounded-full bg-linear-to-r from-primary to-rose-500 transition-all duration-300 group-hover:w-20" />
+                        </div>
                         {isPremium ? (
                             <Chip
                                 color="warning"
@@ -257,7 +264,7 @@ export default function UserDashboardClient({ user }) {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    
+
                     {/* Create New Recipe */}
                     <Link href={isLimitReached ? "/dashboard/user/billing" : "/dashboard/user/add-recipe"} className="group outline-none block">
                         <Card className="p-4 bg-white dark:bg-zinc-900/40 border border-zinc-200/60 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-2xl transition-all duration-200 flex flex-col justify-between gap-3 h-32 shadow-sm group-focus-visible:ring-2 group-focus-visible:ring-zinc-400">
