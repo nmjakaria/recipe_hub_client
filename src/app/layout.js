@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Recipe Hub",
-  description: "A collection of delicious recipes for every occasion.",
+  title: "Recipe Hub | Discover & Share Delicious Recipes",
+  description: "Explore a vast collection of delicious recipes for every occasion. Join Recipe Hub to find easy cooking guides, meal plans, and culinary inspiration.",
 };
 
 export default function RootLayout({ children }) {

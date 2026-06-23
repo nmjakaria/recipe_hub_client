@@ -4,6 +4,11 @@ import { getRecipes } from '@/lib/api/recipe';
 import { getReportsForAdmin, getUserForAdmin } from '@/lib/api/admin';
 import AdminDashboardClient from '@/components/dashboard/admin/AdminDashboardClient';
 
+export const metadata = {
+  title: "Admin Dashboard | Recipe Hub",
+  description: "Manage recipes, users, categories, and track website analytics efficiently from the Recipe Hub admin control panel.",
+};
+
 const AdminDashboardPage = async () => {
     // 1. Guard route access using server-side session rules
     await requireRole("admin");

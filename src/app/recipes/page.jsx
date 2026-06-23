@@ -5,6 +5,11 @@ import { getRecipes } from '@/lib/api/recipe';
 import { FilterX } from 'lucide-react';
 import React from 'react';
 
+export const metadata = {
+  title: "Browse Recipes | Recipe Hub",
+  description: "Explore a vast collection of delicious recipes. Search by ingredients, cuisine, or dietary preferences to find your next perfect meal.",
+};
+
 export default async function BrowseRecipePage({ searchParams }) {
     // Resolve search parameters cleanly
     const resolvedParams = await searchParams;

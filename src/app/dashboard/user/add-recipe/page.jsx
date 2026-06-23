@@ -3,6 +3,11 @@ import React from 'react';
 import { getUserSession } from "@/lib/core/session";
 import AddRecipeForm from '@/components/dashboard/AddRecipeForm';
 
+export const metadata = {
+  title: "Add New Recipe | Recipe Hub",
+  description: "Share your culinary creativity with the world. Upload ingredients, step-by-step instructions, and photos to publish your recipe on Recipe Hub.",
+};
+
 const AddRecipePage = async () => {
     // Securely resolve user data parameters directly on the server
     const user = await getUserSession();

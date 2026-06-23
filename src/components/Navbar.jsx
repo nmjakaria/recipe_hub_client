@@ -102,7 +102,7 @@ export default function Navbar() {
 
                                     <Button
                                         onClick={handleSignOut}
-                                        variant="flat"
+                                        // variant="flat"
                                         color="danger"
                                         size="sm"
                                         className="rounded-full font-medium"
@@ -114,7 +114,7 @@ export default function Navbar() {
                                 <>
                                     <Link
                                         href="/auth/signin"
-                                        className="text-sm font-medium text-default-600 hover:text-foreground transition-colors"
+                                        className="text-sm font-medium  text-orange-600 hover:text-foreground transition-colors"
                                     >
                                         Sign In
                                     </Link>
@@ -197,7 +197,7 @@ export default function Navbar() {
                                     <Button
                                         onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
                                         color="danger"
-                                        variant="flat"
+                                        // variant="flat"
                                         className="w-full rounded-xl font-medium"
                                     >
                                         Sign Out
@@ -207,7 +207,7 @@ export default function Navbar() {
                                 <div className="flex flex-col gap-2 px-2">
                                     <Link
                                         href="/auth/signin"
-                                        className="w-full text-center rounded-xl p-2.5 text-base font-medium text-default-600 hover:bg-default-100 transition-colors"
+                                        className="w-full text-center rounded-xl p-2.5 text-base font-medium text-orange-600 hover:bg-default-100 transition-colors"
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         Sign In

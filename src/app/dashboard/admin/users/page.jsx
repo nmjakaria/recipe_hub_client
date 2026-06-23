@@ -4,6 +4,11 @@ import { requireRole } from "@/lib/core/session";
 import { getUserForAdmin } from '@/lib/api/admin';
 import UserManagementClient from '@/components/dashboard/admin/UserManagementClient';
 
+export const metadata = {
+  title: "Manage Users | Admin Dashboard | Recipe Hub",
+  description: "View, edit, and manage user profiles, roles, and permissions securely from the Recipe Hub admin dashboard.",
+};
+
 const AdminUserManagementPage = async () => {
     // 1. Guard route context
     await requireRole("admin");

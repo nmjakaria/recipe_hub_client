@@ -4,6 +4,16 @@ import RecipeDetailsView from '@/components/RecipeDetailsView';
 import { getRecipeById } from '@/lib/api/recipe'; // Adjust import path if needed
 import { notFound } from 'next/navigation';
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const recipe = await getRecipeById(id);
+
+  return {
+    title: `${recipe.recipeName} | Recipe Hub`,
+    description: recipe.description || `Learn how to cook delicious ${recipe.recipeName} with step-by-step instructions on Recipe Hub.`,
+  };
+}
+
 export default async function RecipePage({ params }) {
     // Await params to extract the dynamic ID safely
     const resolvedParams = await params;
