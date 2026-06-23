@@ -1,35 +1,37 @@
-// components/admin/MetricCard.jsx
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Card } from '@heroui/react';
-
-const cardItemVariants = {
-    hidden: { opacity: 0, y: 15, scale: 0.98 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 260, damping: 25 } }
-};
 
 export default function MetricCard({ card }) {
     const Icon = card.icon;
-    
+
+    // Safe parsing: ensures that if value is undefined or missing, it safely falls back to 0
+    const displayValue = card.value !== undefined && card.value !== null
+        ? card.value.toLocaleString()
+        : "0";
+
     return (
-        <motion.div variants={cardItemVariants}>
-            <Card className="p-5 bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800/80 rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group h-full">
-                <div className="flex items-center justify-between mb-4">
-                    <span className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">
+        <Card className="p-5 bg-white dark:bg-zinc-900/40 border border-zinc-200/70 dark:border-zinc-800/80 rounded-2xl shadow-sm hover:shadow-md hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300 flex flex-col justify-between gap-4 group">
+            <div className="space-y-4">
+                {/* 🌟 Top Row: Icon Container */}
+                <div className={`p-2.5 rounded-xl ${card.bgAccent} ${card.iconColor} w-fit transition-transform duration-300 group-hover:scale-105`}>
+                    <Icon className="size-5 stroke-[2]" />
+                </div>
+
+                {/* Text Content */}
+                <div className="space-y-1">
+                    <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 tracking-wide">
                         {card.title}
-                    </span>
-                    <div className={`p-2 rounded-xl transition-transform duration-300 group-hover:scale-110 ${card.bgAccent} ${card.iconColor}`}>
-                        <Icon className="size-4.5 stroke-[1.75]" />
-                    </div>
+                    </p>
+                    <h4 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                        {displayValue}
+                    </h4>
                 </div>
-                <div>
-                    <span className="text-3xl font-black text-zinc-900 dark:text-zinc-50 tracking-tight">
-                        {card.value.toLocaleString()}
-                    </span>
-                </div>
-            </Card>
-        </motion.div>
+            </div>
+
+            {/* Elegant visual indicator at the bottom of the card */}
+            <div className="h-0.5 w-8 rounded-full bg-zinc-100 dark:bg-zinc-800 transition-all duration-300 group-hover:w-16 group-hover:bg-zinc-300 dark:group-hover:bg-zinc-600" />
+        </Card>
     );
 }

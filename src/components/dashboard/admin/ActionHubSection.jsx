@@ -1,4 +1,3 @@
-// components/admin/ActionHubSection.jsx
 "use client";
 
 import React from 'react';
@@ -17,12 +16,37 @@ const itemVariants = {
     show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 200, damping: 22 } }
 };
 
-export default function ActionHubSection({ totalUsers, totalReports }) {
+export default function ActionHubSection({ totalUsers, pendingReports = 0 }) {
     const quickActions = [
-        { title: "User Management Log", description: "Modify roles, monitor credentials, verify membership status levels, and view ledger logs.", href: "/dashboard/admin/users", icon: ShieldCheck, badge: `${totalUsers} Registered` },
-        { title: "Moderation Queue", description: "Review recipe user flag reports, settle policy parameters, or issue dynamic content blocks.", href: "/dashboard/admin/reports", icon: AlertTriangle, badge: totalReports > 0 ? `${totalReports} Pending Review` : "Clear", isAlert: totalReports > 0 },
-        { title: "Curated Showcase Engine", description: "Promote items to home feeds, handle system features, and manage categorical assignments.", href: "/dashboard/admin/recipes", icon: FolderHeart, badge: "Manage Catalog" },
-        { title: "System Parameters", description: "Adjust processing API limits, tune image dimensions, and update security environment variables.", href: "/dashboard/admin/settings", icon: Settings, badge: "v1.4.2 Stable" }
+        {
+            title: "User Management Log",
+            description: "Modify roles, monitor credentials, verify membership status levels, and view ledger logs.",
+            href: "/dashboard/admin/users",
+            icon: ShieldCheck,
+            badge: `${totalUsers} Registered`
+        },
+        {
+            title: "Moderation Queue",
+            description: "Review recipe user flag reports, settle policy parameters, or issue dynamic content blocks.",
+            href: "/dashboard/admin/recipe-reports",
+            icon: AlertTriangle,
+            badge: pendingReports > 0 ? `${pendingReports} Pending Review` : "Clear",
+            isAlert: pendingReports > 0
+        },
+        {
+            title: "Curated Showcase Engine",
+            description: "Promote items to home feeds, handle system features, and manage categorical assignments.",
+            href: "/dashboard/admin/recipes",
+            icon: FolderHeart,
+            badge: "Manage Catalog"
+        },
+        {
+            title: "System Parameters",
+            description: "Adjust processing API limits, tune image dimensions, and update security environment variables.",
+            href: "/dashboard/admin/settings",
+            icon: Settings,
+            badge: "v1.4.2 Stable"
+        }
     ];
 
     return (
@@ -48,15 +72,14 @@ export default function ActionHubSection({ totalUsers, totalReports }) {
                                             <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300">
                                                 <ActionIcon className="size-5 stroke-[1.75]" />
                                             </div>
-                                            <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${
-                                                action.isAlert 
-                                                    ? "bg-danger-50 dark:bg-danger-950/30 text-danger" 
-                                                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-                                            }`}>
+                                            <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider transition-colors duration-200 ${action.isAlert
+                                                    ? "bg-danger-50 dark:bg-danger-950/30 text-danger animate-pulse"
+                                                    : "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400"
+                                                }`}>
                                                 {action.badge}
                                             </span>
                                         </div>
-                                        
+
                                         <div className="space-y-1">
                                             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">
                                                 {action.title}

@@ -30,3 +30,11 @@ export const updateRecipeModerationStatus = async (recipeId, status) => {
         'PATCH'
     );
 };
+
+export const updateRecipeReportStatus = async (reportId, status) => {
+    return await serverMutation(`/api/reports/${reportId}`, { status: String(status) }, 'PATCH');
+};
+
+export const deleteRecipeReport = async (reportId) => {
+    return await serverMutation(`/api/reports/${reportId}`, {}, 'DELETE');
+};

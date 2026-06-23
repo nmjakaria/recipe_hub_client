@@ -1,4 +1,3 @@
-// components/admin/AdminDashboardClient.jsx
 "use client";
 
 import React from 'react';
@@ -7,7 +6,6 @@ import { Users, Crown, ChefHat, Sparkles, AlertTriangle } from 'lucide-react';
 import MetricCard from './MetricCard';
 import ActionHubSection from './ActionHubSection';
 
-// Framer motion variants container layout settings
 const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -22,12 +20,19 @@ const headerVariants = {
 };
 
 export default function AdminDashboardClient({ stats }) {
+    // 🌟 FIXED: Mapped 'stats.pendingReports' explicitly to avoid undefined property calculations
     const statCards = [
         { title: "Total Platform Users", value: stats.totalUsers, icon: Users, bgAccent: "bg-zinc-50 dark:bg-zinc-800/60", iconColor: "text-zinc-600 dark:text-zinc-400" },
         { title: "Premium Upgrades", value: stats.premiumUsers, icon: Crown, bgAccent: "bg-amber-50 dark:bg-amber-950/20", iconColor: "text-amber-500 dark:text-amber-400" },
         { title: "Recipes Published", value: stats.totalRecipes, icon: ChefHat, bgAccent: "bg-zinc-50 dark:bg-zinc-800/60", iconColor: "text-zinc-600 dark:text-zinc-400" },
         { title: "Featured Creations", value: stats.featuredRecipes, icon: Sparkles, bgAccent: "bg-blue-50 dark:bg-blue-950/20", iconColor: "text-blue-500 dark:text-blue-400" },
-        { title: "Active Reports", value: stats.totalReports, icon: AlertTriangle, bgAccent: stats.totalReports > 0 ? "bg-danger-50 dark:bg-danger-950/20" : "bg-zinc-50 dark:bg-zinc-800/60", iconColor: stats.totalReports > 0 ? "text-danger" : "text-zinc-400" },
+        { 
+            title: "Active Reports", 
+            value: stats.pendingReports, 
+            icon: AlertTriangle, 
+            bgAccent: stats.pendingReports > 0 ? "bg-danger-50 dark:bg-danger-950/20" : "bg-zinc-50 dark:bg-zinc-800/60", 
+            iconColor: stats.pendingReports > 0 ? "text-danger" : "text-zinc-400" 
+        },
     ];
 
     return (
@@ -61,7 +66,7 @@ export default function AdminDashboardClient({ stats }) {
             </div>
 
             {/* Bottom Admin Control Panel Operations */}
-            <ActionHubSection totalUsers={stats.totalUsers} totalReports={stats.totalReports} />
+            <ActionHubSection totalUsers={stats.totalUsers} pendingReports={stats.pendingReports} />
             
         </motion.div>
     );

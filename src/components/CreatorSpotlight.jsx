@@ -109,7 +109,6 @@ export default function CreatorSpotlight() {
                         <Button 
                             fullWidth 
                             color="primary"
-                            variant="bordered"
                             className="font-bold rounded-xl border-zinc-200 dark:border-zinc-800 group-hover:bg-primary group-hover:text-premium group-hover:border-transparent transition-all duration-300"
                             startContent={<Plus className="size-4" />}
                         >

@@ -1,4 +1,3 @@
-// app/dashboard/admin/page.jsx
 import React from 'react';
 import { requireRole } from "@/lib/core/session";
 import { getRecipes } from '@/lib/api/recipe';
@@ -21,7 +20,8 @@ const AdminDashboardPage = async () => {
         premiumUsers: users.filter(user => user.isPremium || user.role === 'premium').length,
         totalRecipes: recipes.length,
         featuredRecipes: recipes.filter(recipe => recipe.isFeatured === true).length,
-        totalReports: reports.length
+        // 🌟 CHANGED: Explicitly filter down to strictly 'pending' reports
+        pendingReports: reports.filter(report => report.status === 'pending').length
     };
 
     return <AdminDashboardClient stats={stats} />;
