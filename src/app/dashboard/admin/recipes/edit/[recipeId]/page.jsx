@@ -1,17 +1,16 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react/no-unescaped-entities */
-//dashboard/user/edit-recipe/[recipeId]
 "use client";
 
 import React, { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, ArrowLeft, Plus, Trash2, Save } from 'lucide-react';
-import { Button, Input, Label, Description, TextArea } from '@heroui/react';
+import { Button, Input, Label, Description, TextArea, toast } from '@heroui/react';
 import Link from 'next/link';
-import { getRecipeByRecipeId } from '@/lib/api/recipe';
 import { updateRecipe } from '@/lib/actions/recipe';
+import { getRecipeByRecipeIdForAdmin } from '@/lib/api/admin';
 
-export default function EditRecipePage({ params }) {
+export default function AdminEditRecipePage({ params }) {
     const resolvedParams = use(params);
     const id = resolvedParams?.id || resolvedParams?.recipeId;
 
@@ -21,7 +20,6 @@ export default function EditRecipePage({ params }) {
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState(null);
 
-    // Core Form Fields State
     const [recipeName, setRecipeName] = useState('');
     const [recipeImage, setRecipeImage] = useState('');
     const [category, setCategory] = useState('');
@@ -29,26 +27,23 @@ export default function EditRecipePage({ params }) {
     const [difficultyLevel, setDifficultyLevel] = useState('');
     const [preparationTime, setPreparationTime] = useState('');
     const [description, setDescription] = useState('');
-
-    // Dynamic Array State blocks
     const [ingredients, setIngredients] = useState([]);
     const [instructions, setInstructions] = useState([]);
 
-    // --- Action: Initial Data Load Hydration ---
     useEffect(() => {
         if (!id) {
             setIsLoading(false);
-            setError("Could not find a valid recipe ID parameter in your URL path routing structure.");
+            setError("Could not locate a valid recipe parameter identifier in the administrative routing parameters.");
             return;
         }
 
         const loadRecipeData = async () => {
             try {
                 setIsLoading(true);
-                const data = await getRecipeByRecipeId(id);
+                const data = await getRecipeByRecipeIdForAdmin(id);
 
                 if (!data) {
-                    throw new Error("The database returned an empty record for this recipe.");
+                    throw new Error("No database document object mapped to this identity key.");
                 }
 
                 setRecipeName(data.recipeName || '');
@@ -61,8 +56,8 @@ export default function EditRecipePage({ params }) {
                 setIngredients(data.ingredients || []);
                 setInstructions(data.instructions || []);
             } catch (err) {
-                console.error("Failed to load recipe details:", err);
-                setError(err.message || "Failed to load recipe information.");
+                console.error("Administrative Hydration Failure:", err);
+                setError(err.message || "Failed to sync remote recipe fields into view arrays.");
             } finally {
                 setIsLoading(false);
             }
@@ -71,7 +66,6 @@ export default function EditRecipePage({ params }) {
         loadRecipeData();
     }, [id]);
 
-    // --- Action Helpers: Dynamic Array Controls ---
     const handleAddIngredient = () => setIngredients([...ingredients, ""]);
     const handleIngredientChange = (index, value) => {
         const updated = [...ingredients];
@@ -88,7 +82,6 @@ export default function EditRecipePage({ params }) {
     };
     const handleRemoveInstruction = (index) => setInstructions(instructions.filter((_, i) => i !== index));
 
-    // --- Action: Form Submission Sync ---
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSaving(true);
@@ -102,7 +95,7 @@ export default function EditRecipePage({ params }) {
             category,
             cuisineType,
             difficultyLevel,
-            preparationTime,
+            preparationTime: Number(preparationTime),
             description,
             ingredients: cleanIngredients,
             instructions: cleanInstructions
@@ -110,14 +103,17 @@ export default function EditRecipePage({ params }) {
 
         try {
             await updateRecipe(id, submissionPayload);
-            alert("Recipe modified successfully!");
+            toast.success("Administrative override modifications written successfully!",{
+                timeout: 2000
+            });
 
-            // Refresh first to invalidate cached layouts, then navigate back
             router.refresh();
-            router.push('/dashboard/user/my-recipes');
+            router.push('/dashboard/admin/recipes');
         } catch (err) {
             console.error(err);
-            alert(err.message || "Failed to sync structural form edits.");
+            toast.warning(err.message || "Could not sync administrative structural payload schemas.",{
+                timeout: 2000
+            });
         } finally {
             setIsSaving(false);
         }
@@ -127,7 +123,7 @@ export default function EditRecipePage({ params }) {
         return (
             <div className="min-h-[70vh] flex flex-col items-center justify-center gap-3">
                 <Loader2 className="size-7 text-primary animate-spin" />
-                <p className="text-xs font-semibold text-zinc-400">Loading recipe blueprints...</p>
+                <p className="text-xs font-semibold text-zinc-400">Loading recipe blueprints inside admin space...</p>
             </div>
         );
     }
@@ -135,35 +131,33 @@ export default function EditRecipePage({ params }) {
     if (error) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-4 space-y-4">
-                <p className="text-sm font-semibold text-danger">Hydration Failure</p>
+                <p className="text-sm font-semibold text-danger">Administrative Configuration Fault</p>
                 <p className="text-xs text-zinc-400 max-w-sm">{error}</p>
-                <Link href="/dashboard/user/my-recipes"><Button size="sm" color="primary" ><ArrowLeft className="size-3.5" /> Return To Dashboard</Button></Link>
+                <Button size="sm" color="primary" as={Link} href="/dashboard/admin/recipes" startContent={<ArrowLeft className="size-3.5" />}>Return To Registry</Button>
             </div>
         );
     }
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-
             <div className="flex items-center gap-4 border-b border-default pb-4">
                 <Link
-                    href="/dashboard/user/my-recipes"
+               href="/dashboard/admin/recipes" 
                 >
-                    <Button as={Link} size="sm" isIconOnly>
+                    <Button size="sm" isIconOnly>
                         <ArrowLeft className="size-5" />
                     </Button>
                 </Link>
                 <div>
-                    <h1 className="text-xl font-black tracking-tight sm:text-2xl text-foreground">Modify Creation</h1>
-                    <p className="text-xs text-zinc-400 mt-0.5">Edit system values for your recipe fields.</p>
+                    <h1 className="text-xl font-black tracking-tight sm:text-2xl text-foreground">Administrative Content Modification</h1>
+                    <p className="text-xs text-zinc-400 mt-0.5">Direct system parameter overrides for database records.</p>
                 </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-zinc-950 border border-default p-6 rounded-2xl shadow-sm">
-
+                
                 {/* Section A: Core Metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
                     <div className="flex flex-col gap-1.5">
                         <Label className="text-xs font-medium text-foreground">Recipe Name</Label>
                         <Input
@@ -178,7 +172,7 @@ export default function EditRecipePage({ params }) {
                     <div className="flex flex-col gap-1.5">
                         <Label className="text-xs font-medium text-foreground">Recipe Cover Image URL</Label>
                         <Input
-                            placeholder="https://i.ibb.co/..."
+                            placeholder="https://images.unsplash.com/..."
                             variant="bordered"
                             value={recipeImage}
                             onChange={(e) => setRecipeImage(e.target.value)}
@@ -186,11 +180,10 @@ export default function EditRecipePage({ params }) {
                         />
                     </div>
 
-                    {/* ✅ CONVERTED TO INPUT: Category Field */}
                     <div className="flex flex-col gap-1.5">
                         <Label className="text-xs font-medium text-foreground">Category</Label>
                         <Input
-                            placeholder="e.g. Breakfast, Lunch, Dinner, Dessert"
+                            placeholder="Breakfast, Lunch, Dinner, Dessert"
                             variant="bordered"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
@@ -209,11 +202,10 @@ export default function EditRecipePage({ params }) {
                         />
                     </div>
 
-                    {/* ✅ CONVERTED TO INPUT: Difficulty Level Field */}
                     <div className="flex flex-col gap-1.5">
                         <Label className="text-xs font-medium text-foreground">Difficulty Level</Label>
                         <Input
-                            placeholder="e.g. Easy, Medium, Hard"
+                            placeholder="Easy, Medium, Hard"
                             variant="bordered"
                             value={difficultyLevel}
                             onChange={(e) => setDifficultyLevel(e.target.value)}
@@ -234,19 +226,19 @@ export default function EditRecipePage({ params }) {
                     </div>
                 </div>
 
-                {/* Brief Description Block */}
+                {/* Narrative Summary Description */}
                 <div className="flex flex-col gap-1.5">
                     <Label className="text-xs font-medium text-foreground">Brief Description</Label>
                     <TextArea
                         aria-label="Recipe Brief Description Summary Input"
-                        placeholder="Provide a narrative summary..."
+                        placeholder="Provide an administrative baseline narrative..."
                         className="w-full min-h-[90px] p-3 border border-default-200 rounded-xl bg-transparent text-sm focus:outline-none focus:border-primary transition-all"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
                     />
                     <Description className="text-zinc-400 text-xs mt-0.5">
-                        Characters length: {description.length}
+                        System Character Registry Matrix Metric Length: {description.length}
                     </Description>
                 </div>
 
@@ -256,13 +248,13 @@ export default function EditRecipePage({ params }) {
                 <div className="space-y-3">
                     <div className="flex items-center justify-between">
                         <label className="text-sm font-bold text-foreground">Ingredients Log</label>
-                        <Button type="button" size="sm" color="primary" onClick={handleAddIngredient}>
-                            <Plus className="size-3.5" /> Add Entry
+                        <Button type="button" size="sm" color="primary"  onClick={handleAddIngredient}>
+                            <Plus className="size-3.5" /> Add Ingredient
                         </Button>
                     </div>
 
                     {ingredients.length === 0 && (
-                        <p className="text-xs text-zinc-400 italic bg-zinc-50 dark:bg-zinc-900/40 p-3 rounded-xl border border-dashed border-default text-center">No lines declared. Click "Add Entry" to map ingredients strings.</p>
+                        <p className="text-xs text-zinc-400 italic bg-zinc-50 dark:bg-zinc-900/40 p-3 rounded-xl border border-dashed border-default text-center">No lines declared. Clear state empty sequence.</p>
                     )}
 
                     <div className="space-y-2">
@@ -272,7 +264,7 @@ export default function EditRecipePage({ params }) {
                                     aria-label={`Ingredient input entry ${index + 1}`}
                                     variant="bordered"
                                     size="sm"
-                                    placeholder={`Ingredient parameter line allocation #${index + 1}`}
+                                    placeholder={`Ingredient property line allocation #${index + 1}`}
                                     value={item}
                                     onChange={(e) => handleIngredientChange(index, e.target.value)}
                                     required
@@ -287,17 +279,17 @@ export default function EditRecipePage({ params }) {
 
                 <hr className="border-default" />
 
-                {/* Section C: Preparation Procedures */}
+                {/* Section C: Execution Procedures */}
                 <div className="space-y-3">
                     <div className="flex items-center justify-between">
                         <label className="text-sm font-bold text-foreground">Preparation Procedures (Instructions)</label>
                         <Button type="button" size="sm" color="primary" onClick={handleAddInstruction}>
-                            <Plus className="size-3.5" /> Add Step
+                            <Plus className="size-3.5" /> Add Step Sequence
                         </Button>
                     </div>
 
                     {instructions.length === 0 && (
-                        <p className="text-xs text-zinc-400 italic bg-zinc-50 dark:bg-zinc-900/40 p-3 rounded-xl border border-dashed border-default text-center">No structural execution matrices written yet.</p>
+                        <p className="text-xs text-zinc-400 italic bg-zinc-50 dark:bg-zinc-900/40 p-3 rounded-xl border border-dashed border-default text-center">No functional operation execution parameters written yet.</p>
                     )}
 
                     <div className="space-y-2">
@@ -309,7 +301,7 @@ export default function EditRecipePage({ params }) {
                                 <div className="w-full flex flex-col gap-1">
                                     <TextArea
                                         aria-label={`Instruction step ${index + 1}`}
-                                        placeholder="Describe physical cooking tasks..."
+                                        placeholder="Describe system execution workflows..."
                                         className="w-full p-2.5 border border-default-200 rounded-xl bg-transparent text-sm focus:outline-none focus:border-primary"
                                         value={item}
                                         onChange={(e) => handleInstructionChange(index, e.target.value)}
@@ -324,15 +316,15 @@ export default function EditRecipePage({ params }) {
                     </div>
                 </div>
 
-                {/* Section D: Operational Control Actions */}
+                {/* Section D: Administrative Operational Footer Controls */}
                 <div className="flex items-center justify-end gap-3 border-t border-default pt-4">
-                    <Link href="/dashboard/user/my-recipes">
-                        <Button size="sm" className="font-bold bg-danger">
-                            Cancel Changes
+                    <Link href="/dashboard/admin/recipes">
+                        <Button  size="sm" className="font-bold bg-danger text-white">
+                            Abort Modifies
                         </Button>
                     </Link>
-                    <Button type="submit" color="primary" size="sm" className="font-bold" isLoading={isSaving} >
-                        {!isSaving && <Save className="size-4" />} Save Structural Matrix
+                    <Button type="submit" color="primary" size="sm" className="font-bold" isLoading={isSaving}>
+                        {!isSaving && <Save className="size-4" />} Commit Changes Globally
                     </Button>
                 </div>
             </form>

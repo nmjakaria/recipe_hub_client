@@ -19,7 +19,7 @@
   --muted-foreground: oklch(0.5 0.02 240);
   --border: oklch(0.92 0.01 240);
 
-  /* Accent — Paprika (Primary brand action tokens) */
+  /* Accent — Paprika */
   --accent: oklch(0.62 0.19 35);
   --accent-foreground: oklch(0.99 0 0);
 
@@ -38,6 +38,34 @@
   /* Premium — Gold */
   --premium: oklch(0.78 0.13 78);
   --premium-foreground: oklch(0.22 0.03 78);
+
+  /* Additional Surface Tokens */
+  --background-secondary: color-mix(
+    in oklch,
+    var(--background) 96%,
+    var(--accent) 4%
+  );
+
+  --card-bg: color-mix(
+    in oklch,
+    var(--background) 88%,
+    white 12%
+  );
+
+  --card-hover-bg: color-mix(
+    in oklch,
+    var(--background) 82%,
+    white 18%
+  );
+
+  --glass-bg: color-mix(
+    in oklch,
+    white 70%,
+    transparent
+  );
+
+  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
 .dark,
@@ -65,9 +93,39 @@
 
   --premium: oklch(0.82 0.12 78);
   --premium-foreground: oklch(0.18 0.03 78);
+
+  /* Additional Surface Tokens */
+  --background-secondary: color-mix(
+    in oklch,
+    var(--background) 92%,
+    var(--accent) 8%
+  );
+
+  --card-bg: color-mix(
+    in oklch,
+    var(--background) 92%,
+    white 4%
+  );
+
+  --card-hover-bg: color-mix(
+    in oklch,
+    var(--background) 88%,
+    white 8%
+  );
+
+  --glass-bg: color-mix(
+    in oklch,
+    black 40%,
+    transparent
+  );
+
+  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 
-/* Extend tailwind values into clean class strings natively */
+/* ---------------------------------------------------------------------
+   Tailwind Theme Mapping
+   --------------------------------------------------------------------- */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -77,12 +135,11 @@
   --color-premium: var(--premium);
   --color-premium-foreground: var(--premium-foreground);
 
-  /* Typography Fallbacks */
   --font-display: "Fraunces", ui-serif, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Modern accent scrollbars */
+/* Scrollbars */
 :root {
   --scrollbar-thumb: color-mix(in oklch, var(--accent) 35%, transparent);
 }
@@ -97,8 +154,24 @@
 
   body {
     @apply bg-background text-foreground antialiased selection:bg-premium/30;
+
     font-family: var(--font-sans);
     transition: background-color 0.3s ease, color 0.2s ease;
+
+    /* Decorative Background */
+    background-image:
+      radial-gradient(
+        circle at top left,
+        color-mix(in oklch, var(--accent) 10%, transparent),
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        color-mix(in oklch, var(--premium) 10%, transparent),
+        transparent 35%
+      );
+
+    background-attachment: fixed;
   }
 
   h1,
@@ -116,42 +189,86 @@
 }
 
 /* ---------------------------------------------------------------------
-   Reusable Utility Component Layer
+   Components Layer
    --------------------------------------------------------------------- */
 @layer components {
-  /* Wraps page sections to a consistent max width */
+  /* Container */
   .container-app {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
-  /* Recipe / dashboard card surface */
+  /* Main Surface Card */
   .surface-card {
-    /* Fixed: Replaced dynamic theme class with a native color-mix fallback */
-    background-color: color-mix(in oklch, var(--background) 50%, transparent);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    border-radius: 1rem; /* 16px = rounded-2xl */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease-out;
-  }
-  
-  .surface-card:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background: var(--card-bg);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border: 1px solid
+      color-mix(in oklch, var(--border) 80%, white 20%);
+
+    border-radius: 1rem;
+
+    box-shadow: var(--card-shadow);
+
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      background-color 0.3s ease,
+      border-color 0.3s ease;
   }
 
-  /* Premium membership badge */
+  .surface-card:hover {
+    background: var(--card-hover-bg);
+
+    border-color: color-mix(
+      in oklch,
+      var(--accent) 30%,
+      var(--border)
+    );
+
+    box-shadow: var(--card-shadow-hover);
+
+    transform: translateY(-3px);
+  }
+
+  /* Glass Card */
+  .glass-card {
+    background: var(--glass-bg);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid
+      color-mix(in oklch, var(--border) 75%, white 25%);
+
+    border-radius: 1.25rem;
+
+    box-shadow: var(--card-shadow);
+  }
+
+  /* Section Wrapper */
+  .section-muted {
+    background: var(--background-secondary);
+    border-radius: 2rem;
+  }
+
+  /* Premium Badge */
   .badge-premium {
     @apply inline-flex items-center gap-1 rounded-full bg-premium
       px-2.5 py-0.5 text-xs font-semibold text-premium-foreground;
   }
 
-  /* Recipe count / report count pill, e.g. on admin tables */
+  /* Count Badge */
   .badge-count {
     @apply inline-flex items-center justify-center rounded-full bg-accent/10
       px-2 py-0.5 text-xs font-medium text-accent;
   }
 }
 
+/* ---------------------------------------------------------------------
+   Lenis Smooth Scroll
+   --------------------------------------------------------------------- */
 html.lenis,
 html.lenis body {
   height: auto;

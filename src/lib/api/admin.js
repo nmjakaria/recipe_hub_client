@@ -7,3 +7,7 @@ export const getUserForAdmin = async () => {
 export const getReportsForAdmin = async () => {
     return serverFetchWithToken(`/api/reports`);
 }
+
+export const getRecipeByRecipeIdForAdmin= async (id) => {
+    return serverFetchWithToken(`/api/admin/recipes/${id}`)
+}

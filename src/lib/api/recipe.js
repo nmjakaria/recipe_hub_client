@@ -31,3 +31,6 @@ export const getRecipeByRecipeId = async (id) => {
     return serverFetchWithToken(`/api/user/my-recipes/${id}`)
 }
 
+export const getAllRecipes = async () => {
+    return serverFetch(`/api/recipes`);
+}
