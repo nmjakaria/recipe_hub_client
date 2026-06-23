@@ -89,7 +89,7 @@ export default function SignupPage() {
         <div className="grid min-h-screen grid-cols-1 md:grid-cols-2 bg-zinc-50 dark:bg-zinc-950 transition-colors">
             
             {/* ─── LEFT SIDE: PREMIUM VISUAL COVER MEDIA DESIGN ─── */}
-            <div className="hidden md:block relative p-4 h-screen sticky top-0">
+            <div className="hidden md:block relative p-4 h-screen top-0">
                 <div
                     className="w-full h-full rounded-[2.5rem] bg-cover bg-center shadow-md border border-zinc-200/50 dark:border-zinc-900"
                     style={{

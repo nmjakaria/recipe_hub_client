@@ -12,14 +12,17 @@ import { motion } from 'framer-motion';
 export default function HeroBanner() {
     // Initialize Embla Carousel with Autoplay
     const [emblaRef] = useEmblaCarousel({ loop: true }, [
-        Autoplay({ delay: 4500, stopOnInteraction: false })
+        Autoplay({ delay: 3500, stopOnInteraction: false })
     ]);
 
     const sliderImages = [
         "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=80"
+        "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1654863404432-cac67587e25d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1707013533606-62919aa3aa29?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1508615263227-c5d58c1e5821?auto=format&fit=crop&w=1200&q=80"
     ];
 
     // Framer Motion Orchestration Variants

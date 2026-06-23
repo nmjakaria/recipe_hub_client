@@ -116,11 +116,11 @@ export default function Footer() {
                             </div>
                             <div className="flex items-center gap-3">
                                 <Phone className="size-4 text-orange-500/80 shrink-0" />
-                                <span>+1 (555) 234-5678</span>
+                                <span>+880 (018) 234-5678</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <MapPin className="size-4 text-orange-500/80 shrink-0" />
-                                <span>101 Culinary Ave, San Francisco, CA</span>
+                                <span>4386 Chattogram, BD</span>
                             </div>
                         </div>
 
