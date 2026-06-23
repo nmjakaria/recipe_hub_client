@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable react/no-unescaped-entities */
+ 
 "use client";
 
 import React, { useEffect, useState, use } from 'react';
@@ -232,7 +232,7 @@ export default function AdminEditRecipePage({ params }) {
                     <TextArea
                         aria-label="Recipe Brief Description Summary Input"
                         placeholder="Provide an administrative baseline narrative..."
-                        className="w-full min-h-[90px] p-3 border border-default-200 rounded-xl bg-transparent text-sm focus:outline-none focus:border-primary transition-all"
+                        className="w-full min-h-22.5 p-3 border border-default-200 rounded-xl bg-transparent text-sm focus:outline-none focus:border-primary transition-all"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required

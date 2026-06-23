@@ -240,7 +240,7 @@ export default function EditRecipePage({ params }) {
                     <TextArea
                         aria-label="Recipe Brief Description Summary Input"
                         placeholder="Provide a narrative summary..."
-                        className="w-full min-h-[90px] p-3 border border-default-200 rounded-xl bg-transparent text-sm focus:outline-none focus:border-primary transition-all"
+                        className="w-full min-h-22.5 p-3 border border-default-200 rounded-xl bg-transparent text-sm focus:outline-none focus:border-primary transition-all"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required

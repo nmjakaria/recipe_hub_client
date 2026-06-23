@@ -116,12 +116,12 @@ export default function AdminRecipeReportsPage() {
                 <div className="space-y-1">
                     <h1 className="text-3xl font-black tracking-tight flex items-center gap-2 text-zinc-900 dark:text-white">
                         <ShieldAlert className="text-rose-500 size-7" />
-                        Community <span className="bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 bg-clip-text text-transparent">Moderation Queue</span>
+                        Community <span className="bg-linear-to-r from-rose-500 via-orange-500 to-amber-500 bg-clip-text text-transparent">Moderation Queue</span>
                     </h1>
 
                     {/* Animated colorful visual divider */}
                     <motion.div
-                        className="h-1 bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 rounded-full my-3"
+                        className="h-1 bg-linear-to-r from-rose-500 via-orange-500 to-amber-500 rounded-full my-3"
                         style={{ backgroundSize: '200% 200%' }}
                         animate={{
                             backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],

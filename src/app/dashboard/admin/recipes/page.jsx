@@ -159,7 +159,7 @@ export default function AdminRecipesPage() {
                                                 color={isItemFeatured ? "warning" : "default"}
                                                 disabled={isUpdating === `${id}-isFeatured`}
                                                 onClick={() => handleUpdateField(id, 'isFeatured', !isItemFeatured)}
-                                                className="rounded-xl font-bold min-w-[100px]"
+                                                className="rounded-xl font-bold min-w-25"
                                             >
                                                 <Star className={`size-3.5 ${isItemFeatured ? 'fill-current' : ''}`} />
                                                 {isItemFeatured ? "Featured" : "Standard"}
@@ -173,7 +173,7 @@ export default function AdminRecipesPage() {
                                                 color={currentStatus === 'allowed' ? "success" : "danger"}
                                                 disabled={isUpdating === `${id}-status`}
                                                 onClick={() => handleUpdateField(id, 'status', currentStatus === 'allowed' ? 'pending' : 'allowed')}
-                                                className="rounded-xl font-bold text-white min-w-[100px] capitalize"
+                                                className="rounded-xl font-bold text-white min-w-25 capitalize"
                                             >
                                                 <span>{currentStatus === 'allowed' ? <CheckCircle className="size-3.5" /> : <AlertCircle className="size-3.5" />}</span>
                                                 {currentStatus}

@@ -16,7 +16,7 @@ export default function MetricCard({ card }) {
             <div className="space-y-4">
                 {/* 🌟 Top Row: Icon Container */}
                 <div className={`p-2.5 rounded-xl ${card.bgAccent} ${card.iconColor} w-fit transition-transform duration-300 group-hover:scale-105`}>
-                    <Icon className="size-5 stroke-[2]" />
+                    <Icon className="size-5 stroke-2" />
                 </div>
 
                 {/* Text Content */}
