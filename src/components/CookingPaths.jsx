@@ -46,7 +46,7 @@ export default function CookingPaths() {
     ];
 
     return (
-        <div className='bg-linear-to-b from-success-soft/30 via-success-soft/45 to-success-soft/80 w-full'>
+        <div className='bg-linear-to-b from-rose-50 via-success-soft/45 to-rose-100/50 w-full'>
             <section className="relative w-full max-w-7xl mx-auto my-25 px-4 sm:px-6 lg:px-8">
             
                 {/* Header Block */}
