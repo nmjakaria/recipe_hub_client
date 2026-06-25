@@ -3,8 +3,10 @@
 import { redirect } from "next/navigation";
 import { auth } from "../auth";
 import { headers } from "next/headers";
+import { unstable_noStore } from "next/cache";
 
 export const getUserSession = async () => {
+    unstable_noStore();
     const session = await auth.api.getSession({
         headers: await headers() // some endpoints might require headers
     })
@@ -13,6 +15,7 @@ export const getUserSession = async () => {
 }
 
 export const getUserToken = async () => {
+    unstable_noStore()
     const {token} = await auth.api.getToken({
         headers: await headers()
     });

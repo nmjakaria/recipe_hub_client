@@ -1,9 +1,12 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@heroui/react';
 import { ShieldCheck, ArrowRight, Star } from 'lucide-react';
 import { stripe } from '@/lib/stripe';
 import { createSubscription } from '@/lib/actions/user';
+import SessionRefresher from './SessionRefresher';
+
 
 export default async function SubscriptionSuccessPage({ searchParams }) {
     const params = await searchParams;
@@ -35,6 +38,7 @@ export default async function SubscriptionSuccessPage({ searchParams }) {
                     stripeSubscriptionId: subscription.id || session.subscription, // Fallback to raw string ID if not expanded
                     stripePriceId: subscription?.items?.data?.[0]?.price?.id || '',
                     status: subscription.status || 'active',
+                    amount: session.amount_total / 100,
                     expiresAt: expirationDate
                 };
 
@@ -43,6 +47,7 @@ export default async function SubscriptionSuccessPage({ searchParams }) {
 
                 if (dbResponse && dbResponse.success === true) {
                     processSuccess = true;
+
                 } else {
                     console.error("🔴 Express Backend rejected saving data:", dbResponse);
                 }
@@ -54,6 +59,7 @@ export default async function SubscriptionSuccessPage({ searchParams }) {
 
     return (
         <div className="min-h-[75vh] flex items-center justify-center px-4 antialiased text-zinc-900 dark:text-zinc-50">
+            {processSuccess && <SessionRefresher />}
             <div className="max-w-md w-full text-center space-y-6 bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 p-8 rounded-3xl shadow-xl relative overflow-hidden">
 
                 {/* Aesthetic Glow Effect */}
@@ -87,6 +93,16 @@ export default async function SubscriptionSuccessPage({ searchParams }) {
                         </div>
                     </div>
                     <span className="text-[10px] font-bold px-2.5 py-1 bg-emerald-500 text-white rounded-full uppercase tracking-wider">Active</span>
+                </div>
+                <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200/60 dark:border-zinc-800/60 text-left max-w-sm mx-auto">
+                    <div className="size-7 rounded-lg bg-orange-500/10 dark:bg-orange-500/5 flex items-center justify-center text-orange-500 shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 1 1 1.063 1.06l-.041.02a.75.75 0 0 1-1.062-1.06Zm0 4.75h1.5a.75.75 0 0 0 0-1.5h-1.5a.75.75 0 0 0 0 1.5ZM22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10Z" />
+                        </svg>
+                    </div>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">
+                        Dashboard status didn't refresh? Please <span className="font-extrabold text-zinc-800 dark:text-zinc-200">log out and sign back in</span> to update your token cache.
+                    </p>
                 </div>
 
                 {/* Actions Route Controls */}

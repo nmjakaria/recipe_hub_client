@@ -69,11 +69,8 @@ export const auth = betterAuth({
                     return {
                         data: {
                             ...user,
-                            // If these fields weren't sent (Google doesn't), use defaults
                             role: user.role || "user",
                             plan: user.plan || "user_free",
-                            // Use ?? (nullish coalescing) to allow `false` to be passed,
-                            // only defaulting if it's undefined or null.
                             isBlocked: user.isBlocked ?? false,
                         },
                     };
