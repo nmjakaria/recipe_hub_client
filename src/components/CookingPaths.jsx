@@ -46,9 +46,9 @@ export default function CookingPaths() {
     ];
 
     return (
-        <div className='bg-linear-to-b from-rose-50 via-success-soft/45 to-rose-100/50 w-full'>
+        <div className='w-full bg-linear-to-b from-rose-50/60 via-zinc-50 to-rose-100/40 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950/80 transition-colors duration-500'>
             <section className="relative w-full max-w-7xl mx-auto my-25 px-4 sm:px-6 lg:px-8">
-            
+
                 {/* Header Block */}
                 <div className="text-center max-w-xl mx-auto mb-12 space-y-3">
                     <div className="inline-flex items-center gap-1.5 bg-rose-50 dark:bg-rose-950/40 text-rose-600 px-3 py-1 rounded-full border border-rose-100 dark:border-rose-900/40 text-xs font-bold uppercase tracking-wider">
@@ -61,6 +61,7 @@ export default function CookingPaths() {
                         Skip standard lists. Select a tailored atmospheric node calibrated around your mood, lifestyle, or immediate time constraints.
                     </p>
                 </div>
+
                 {/* Path Grid Structure */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {paths.map((path, idx) => (
@@ -86,6 +87,7 @@ export default function CookingPaths() {
                                         </p>
                                     </div>
                                 </div>
+
                                 {/* Mini counter foot indicator */}
                                 <div className="pt-6 mt-auto flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                                     <span>{path.count}</span>
