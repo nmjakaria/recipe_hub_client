@@ -1,10 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@heroui/react';
 import { CheckCircle2, ShoppingBag, ArrowRight, Sparkles, Receipt, AlertTriangle } from 'lucide-react';
 import { stripe } from '@/lib/stripe';
-import { createPurchases } from '@/lib/actions/purchases';
+import { createPurchases } from '@/lib/actions/user';
+
 
 export default async function PaymentSuccessPage({ searchParams }) {
     const params = await searchParams;
@@ -94,7 +94,7 @@ export default async function PaymentSuccessPage({ searchParams }) {
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between items-start gap-4">
                                 <span className="text-zinc-400 font-medium">Recipe item:</span>
-                                <span className="font-bold text-zinc-800 dark:text-zinc-200 truncate max-w-[200px]">{recipeName}</span>
+                                <span className="font-bold text-zinc-800 dark:text-zinc-200 truncate max-w-50">{recipeName}</span>
                             </div>
                             <div className="flex justify-between items-center pt-2 border-t border-dashed border-zinc-200 dark:border-zinc-800">
                                 <span className="text-zinc-900 dark:text-zinc-100 font-bold">Paid Amount:</span>

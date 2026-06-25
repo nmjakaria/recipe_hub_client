@@ -39,7 +39,7 @@ export default function PaymentCancelPage() {
                 {/* Navigation Action Buttons */}
                 <div className="flex flex-col gap-2 pt-2">
                     {/* Try Again Option */}
-                    <Link href="/recipes" className="w-full block">
+                    <Link href="/dashboard/user/billing" className="w-full block">
                         <Button 
                             className="w-full font-bold h-12 rounded-xl text-sm shadow-md bg-orange-500 hover:bg-orange-600 text-white transition-all group"
                             startContent={<RefreshCw className="size-4 transition-transform group-hover:rotate-180 duration-500" />}

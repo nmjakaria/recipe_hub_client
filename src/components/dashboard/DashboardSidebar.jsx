@@ -60,7 +60,7 @@ export function DashboardSidebar({ user }) {
                             className="size-10 rounded-full object-cover border border-zinc-200/80 dark:border-zinc-800 shadow-sm shrink-0" 
                         />
                     ) : (
-                        <div className="size-10 rounded-full bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 border border-zinc-200 dark:border-zinc-700/60 flex items-center justify-center font-bold text-xs uppercase text-zinc-700 dark:text-zinc-300 shrink-0 shadow-sm">
+                        <div className="size-10 rounded-full bg-linear-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 border border-zinc-200 dark:border-zinc-700/60 flex items-center justify-center font-bold text-xs uppercase text-zinc-700 dark:text-zinc-300 shrink-0 shadow-sm">
                             {user?.name ? user.name.slice(0, 2) : "CH"}
                         </div>
                     )}
