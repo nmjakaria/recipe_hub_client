@@ -15,6 +15,7 @@ export default function RecipeDetailsView({ recipe }) {
     const pathname = usePathname();
 
     const { data: session, isPending } = authClient.useSession();
+    const user = session?.user;
 
     const {
         recipeName,
@@ -62,10 +63,15 @@ export default function RecipeDetailsView({ recipe }) {
 
         setIsPurchasing(true);
         try {
-            const response = await fetch('/api/checkout/stripe', {
+            const response = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ recipeId, recipeName, price: 499 })
+                body: JSON.stringify({
+                    recipeId,
+                    recipeName,
+                    userId: user?.id,
+                    userEmail: user?.email
+                })
             });
 
             const data = await response.json();
