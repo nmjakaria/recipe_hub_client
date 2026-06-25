@@ -2,7 +2,6 @@ import React from 'react';
 import { ArrowLeftRight, CreditCard, ShieldCheck, RefreshCw } from 'lucide-react';
 import { getTransactions } from '@/lib/api/admin';
 
-// Fetch helper targeting your Express Backend URL config
 
 
 export default async function AdminTransactionsPage() {
