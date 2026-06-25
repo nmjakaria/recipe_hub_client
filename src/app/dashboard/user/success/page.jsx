@@ -5,7 +5,6 @@ import { Button } from '@heroui/react';
 import { ShieldCheck, ArrowRight, Star } from 'lucide-react';
 import { stripe } from '@/lib/stripe';
 import { createSubscription } from '@/lib/actions/user';
-import SessionRefresher from './SessionRefresher';
 
 
 export default async function SubscriptionSuccessPage({ searchParams }) {
@@ -59,7 +58,6 @@ export default async function SubscriptionSuccessPage({ searchParams }) {
 
     return (
         <div className="min-h-[75vh] flex items-center justify-center px-4 antialiased text-zinc-900 dark:text-zinc-50">
-            {processSuccess && <SessionRefresher />}
             <div className="max-w-md w-full text-center space-y-6 bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 p-8 rounded-3xl shadow-xl relative overflow-hidden">
 
                 {/* Aesthetic Glow Effect */}
