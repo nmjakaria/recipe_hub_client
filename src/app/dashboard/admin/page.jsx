@@ -22,7 +22,7 @@ const AdminDashboardPage = async () => {
     // 3. Compile lean numerical metrics payload
     const stats = {
         totalUsers: users.length,
-        premiumUsers: users.filter(user => user.isPremium || user.role === 'premium').length,
+        premiumUsers: users.filter(user => user.isPremium || user.plan !== 'user_free' && user.plan !== 'admin').length,
         totalRecipes: recipes.length,
         featuredRecipes: recipes.filter(recipe => recipe.isFeatured === true).length,
         // 🌟 CHANGED: Explicitly filter down to strictly 'pending' reports

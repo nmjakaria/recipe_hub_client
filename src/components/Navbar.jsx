@@ -8,6 +8,7 @@ import { ThemeSwitcher } from "./theme-switcher";
 import { useSession } from "@/lib/auth-client";
 import { signOut } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,8 +49,12 @@ export default function Navbar() {
                 {/* LOGO AREA (Left Column) */}
                 <div className="flex items-center justify-start">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-orange-500 to-rose-500 shadow-lg group-hover:scale-105 transition-transform duration-200">
-                            <span className="text-xl font-bold text-white">R</span>
+                        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-orange-300 to-rose-400 shadow-lg group-hover:scale-105 transition-transform duration-200">
+                            <Image alt="logo"
+                                src="/recipe_hub_logo.png"
+                                width={35}
+                                height={35}
+                            />
                         </div>
                         <div className="hidden leading-none sm:block">
                             <span className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">
